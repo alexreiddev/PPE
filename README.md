@@ -5,11 +5,25 @@ catalogue and enquiry site.
 
 - Live preview: `oasis-star.netlify.app`
 - Target domain: `oasisstargt.com` (DNS switch pending)
+- Site source: [`site/`](site/) — see [`site/README.md`](site/README.md)
 - Project context and settled decisions: [`docs/project-handoff.md`](docs/project-handoff.md)
 - Skill routing and design guardrails: [`CLAUDE.md`](CLAUDE.md)
 
-The site source itself is not in this repo yet — it lives outside as `oasis-star.zip`.
-This repo currently carries the skills and the written context.
+## Layout
+
+```
+site/            The deployed static site — this is the only published directory
+docs/            Internal project context. Never served.
+.claude/skills/  Vendored frontend design skills
+netlify.toml     publish = "site", security headers, caching, friendly URLs
+CLAUDE.md        Skill routing and design guardrails. Never served.
+```
+
+`netlify.toml` sits at the repo root with `publish = "site"` so that `docs/` and
+`CLAUDE.md` stay off the public site. `docs/project-handoff.md` contains pricing floors
+and negotiation positions — **do not widen the publish directory to the repo root.**
+
+Deploy from the repo root: `npx netlify-cli deploy --prod --dir site`.
 
 ## What's vendored
 

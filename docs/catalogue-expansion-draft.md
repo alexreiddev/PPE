@@ -29,8 +29,9 @@
 > shape. Categories with no verified product stay `stocked: false` and render under
 > "Available on request" — which is where most of this belongs until sourced.
 >
-> The `Ex-Handy 10 DZ1` is excluded per the supplied specification, though it is present
-> in the client's 2025 catalogue. Confirm that removal is intentional.
+> **Resolved:** the `Ex-Handy 10 DZ1` exclusion is intentional — the line is discontinued
+> for Oasis Star. It has been removed from `site/assets/js/data.js`, leaving four
+> documented products.
 
 ---
 
@@ -101,8 +102,9 @@ lineup featured in the source documentation." — see risk 3 above.*
 
 **ecom phones (2 models)**
 - Smart-Ex 03 DZ1 smartphone — 5G, rugged explosion-proof, Android 13, 6-inch Gorilla
-  Glass multi-touch operable with gloves, dual-SIM/eSIM. *(Already in the client's
-  documented catalogue.)*
+  Glass multi-touch operable with gloves, dual-SIM/eSIM. *(Already live in the
+  catalogue — the only remaining hazardous-area device since the Ex-Handy 10 was
+  discontinued.)*
 - Hazardous-area compact utility device — Zone 1/21 and Division 1, physical
   programmable buttons for push-to-talk and lone-worker protection. *(Model name not
   specified — needs identifying before listing.)*

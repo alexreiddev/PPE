@@ -3,9 +3,14 @@
 PPE carries the design skill library for the **Oasis Star General Trading** PPE
 catalogue and enquiry site (`oasisstargt.com`, preview at `oasis-star.netlify.app`).
 
-Project context, settled decisions, pricing positions, and outstanding launch items are
-in [`docs/project-handoff.md`](docs/project-handoff.md). Read it before design work.
+The site source is in [`site/`](site/). Project context, settled decisions, pricing
+positions, and outstanding launch items are in
+[`docs/project-handoff.md`](docs/project-handoff.md). Read it before design work.
 Do not re-litigate decisions marked settled there.
+
+**`site/` is the only published directory.** `netlify.toml` at the repo root sets
+`publish = "site"` so `docs/` and this file are never served — `docs/project-handoff.md`
+holds pricing floors and negotiation positions. Do not widen the publish dir.
 
 ## Skill selection — pick by project requirement
 
@@ -41,7 +46,7 @@ The taste skills carry strong opinions and an "anti-default discipline" that wil
 toward re-skinning. On this project that is **out of scope without a re-quote**. Hold
 these fixed unless the client explicitly asks otherwise:
 
-**Design tokens are locked** (defined at the top of `assets/css/site.css`):
+**Design tokens are locked** (defined at the top of `site/assets/css/site.css`):
 
 | Token | Value | Role |
 | --- | --- | --- |
@@ -90,9 +95,14 @@ doesn't silently revert it.
 
 ## Product data
 
-Products live in `window.OS_PRODUCTS` (`assets/js/data.js`); categories in
+Products live in `window.OS_PRODUCTS` (`site/assets/js/data.js`); categories in
 `window.OS_CATEGORIES`, where `stocked: false` renders under "Available on request".
-Entry shape is documented in `docs/project-handoff.md`.
+Entry shape is documented at the top of `data.js` and in `docs/project-handoff.md`.
+
+Currently **four** documented lines: Petroking 3228, Petroking 3229, Roughneck 267
+series, Smart-Ex 03 DZ1. The ecom Ex-Handy 10 DZ1 is discontinued for Oasis Star and was
+removed — do not reintroduce it. Copy that says "five products" is stale; the datasheet
+layout rationale still holds at four.
 
 **Brand names are gated.** Whether Oasis Star is a formally authorised distributor for
 Red Wing, ecom instruments, and Roughneck is unresolved. Do not publish those brand

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your enquiry — Oasis Star General Trading</title>
+<meta name="description" content="Review your product and size list and send it to Oasis Star. We reply with pricing, stock and lead time.">
+<meta property="og:title" content="Your enquiry — Oasis Star General Trading">
+<meta property="og:description" content="Review your product and size list and send it to Oasis Star. We reply with pricing, stock and lead time.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#111A1C">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+  <div class="masthead__in">
+    <a class="brand" href="index.html">
+      <svg class="brand__flame" viewBox="0 0 28 28" aria-hidden="true">
+        <path fill="#E0A22B" d="M14 0c1.2 7.2 6.8 12.8 14 14-7.2 1.2-12.8 6.8-14 14-1.2-7.2-6.8-12.8-14-14C7.2 12.8 12.8 7.2 14 0z"/>
+      </svg>
+      <span class="brand__txt">
+        <span class="brand__parent">General Trading &middot; UAE</span>
+        <span class="brand__name">Oasis Star</span>
+      </span>
+    </a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="enquiry.html" aria-current="page">Enquiry</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a class="tally" href="enquiry.html">
+      <span class="tally__txt">Enquiry</span>
+      <span class="tally__n" data-tally data-empty="true">0</span>
+    </a>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="dark section--tight">
+    <div class="wrap">
+      <span class="eyebrow">Enquiry list</span>
+      <h2 style="max-width:24ch">Your list, with sizes. Pricing comes back from us.</h2>
+      <p class="lede" style="margin:0">Send this and we confirm pricing, stock and lead time, normally within one working day. Nothing is ordered and nothing is charged until you approve a formal quotation.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap" id="enquiry-body">
+      <div class="quote">
+
+        <div>
+          <span class="eyebrow eyebrow--muted">Products and sizes</span>
+          <div class="lines" id="lines"></div>
+          <dl class="tallybar" id="tallybar"></dl>
+          <p class="hint" style="margin-top:14px">Need a different size breakdown for the same product? Add it again with the other size &mdash; each size is quoted as its own line.</p>
+          <div class="actions">
+            <a class="btn btn--quiet" href="products.html">Add more products</a>
+          </div>
+        </div>
+
+        <form class="panel panel--sticky" id="rfq" name="product-enquiry" method="POST"
+              data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="product-enquiry">
+          <p hidden><label>Leave this empty <input name="bot-field"></label></p>
+          <input type="hidden" name="reference">
+          <textarea name="items" hidden></textarea>
+
+          <span class="eyebrow eyebrow--blue">Where to send it</span>
+          <h3 style="margin-bottom:20px">Your details</h3>
+
+          <div class="field">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" autocomplete="organization">
+            <p class="err">Enter your company name.</p>
+          </div>
+
+          <div class="field">
+            <label for="contact">Contact name</label>
+            <input id="contact" name="contact" type="text" autocomplete="name">
+            <p class="err">Enter a contact name.</p>
+          </div>
+
+          <div class="field field--half">
+            <div class="field" style="margin:0">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email">
+              <p class="err">Enter a valid email.</p>
+            </div>
+            <div class="field" style="margin:0">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+              <p class="err">Enter a phone number.</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="emirate">Delivery emirate</label>
+            <select id="emirate" name="emirate">
+              <option>Abu Dhabi</option>
+              <option>Dubai</option>
+              <option>Sharjah</option>
+              <option>Ajman</option>
+              <option>Umm Al Quwain</option>
+              <option>Ras Al Khaimah</option>
+              <option>Fujairah</option>
+              <option>Collection from our store</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="needed">Needed by</label>
+            <input id="needed" name="needed" type="date">
+          </div>
+
+          <div class="field">
+            <label for="notes">Site, standards, anything else</label>
+            <textarea id="notes" name="notes" placeholder="e.g. project name, the standard your specification calls for, or a size breakdown you would like us to check"></textarea>
+          </div>
+
+          <button class="btn btn--primary" type="submit" style="width:100%;justify-content:center">Send enquiry</button>
+          <p class="hint">No payment is taken here. We reply with a formal quotation you can raise a purchase order against.</p>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <h4>Oasis Star General Trading</h4>
+        <p>Certified safety equipment for the UAE construction sector. Head-to-toe personal protective equipment and Zone 1 certified handhelds, supplied to international standards.</p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html?cat=foot">Foot protection</a></li>
+          <li><a href="products.html?cat=hand">Hand protection</a></li>
+          <li><a href="products.html?cat=exdev">Hazardous-area devices</a></li>
+          <li><a href="products.html#request">Available on request</a></li>
+          <li><a href="products.html">All lines</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Buying</h4>
+        <ul>
+          <li><a href="index.html#how">How enquiries work</a></li>
+          <li><a href="index.html#about">About us</a></li>
+          <li><a href="enquiry.html">Your enquiry list</a></li>
+          <li><a href="contact.html">Talk to us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Oasis Star General Trading</li>
+          <li>United Arab Emirates</li>
+          <li><a href="tel:+9710000000">+971 0 000 0000</a></li>
+          <li><a href="mailto:sales@oasisstar.ae">sales@oasisstar.ae</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>&copy; 2026 Oasis Star General Trading</span>
+      <span>Your safety, our priority</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

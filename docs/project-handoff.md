@@ -4,6 +4,25 @@
 
 ---
 
+## Updates since this handoff was written
+
+The body below is preserved as written. These points supersede it:
+
+- **Site source is now in this repo** at [`site/`](../site/), no longer only
+  `/mnt/user-data/outputs/oasis-star/` as a zip. `netlify.toml` moved to the repo root
+  with `publish = "site"`, so `docs/` and `CLAUDE.md` are never served.
+- **ecom Ex-Handy 10 DZ1 is discontinued for Oasis Star** and has been removed from
+  `site/assets/js/data.js`. The catalogue is now **four** documented lines, not five.
+  Copy referring to five products has been updated throughout.
+- **Design skills added** at `.claude/skills/` (Leon Lin's Taste Skill, 13 skills). See
+  [`../CLAUDE.md`](../CLAUDE.md) for which to use and the guardrails they must respect.
+- **An expanded product list has been proposed** but is unverified — see
+  [`catalogue-expansion-draft.md`](catalogue-expansion-draft.md). It adds Ansell, ATG,
+  Reebok, and Taedylyn, which widens the unresolved distributor-authorisation question
+  from three brands to seven.
+
+---
+
 ## Quick context
 
 I'm building a PPE catalogue and enquiry site for a UAE safety equipment supplier. The site is **live in preview** at `oasis-star.netlify.app` but not yet pointed at the client's real domain. Working through go-live steps and a big meeting with the CEO tomorrow.
