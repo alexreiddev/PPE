@@ -29,6 +29,15 @@
   --gut: 24px;
   --max: 1240px;
   --radius: 3px;
+
+  /* Surface texture ----------------------------------------------------
+     Derived from the palette above — no image assets, no extra requests.
+     This is depth on existing surfaces, NOT the product/background
+     photography treatment, which is a separate piece of work.           */
+  --hatch-dark:  repeating-linear-gradient(
+                   -45deg, transparent 0 7px, rgba(255,255,255,.016) 7px 14px);
+  --hatch-light: repeating-linear-gradient(
+                   -45deg, transparent 0 7px, rgba(17,26,28,.022) 7px 14px);
 }
 
 /* Reset -------------------------------------------------------------- */
@@ -75,7 +84,9 @@ h1, h2, h3, h4 {
   line-height: 1.02;
   margin: 0 0 .5em;
   text-transform: uppercase;
+  text-wrap: balance;   /* no single orphaned word on the last line */
 }
+p, .lede { text-wrap: pretty; }
 h1 { font-size: clamp(38px, 5.6vw, 74px); }
 h2 { font-size: clamp(26px, 3.2vw, 40px); }
 h3 { font-size: 19px; letter-spacing: -0.01em; }
@@ -90,7 +101,7 @@ p  { margin: 0 0 1em; }
   margin: 0 0 18px;
   display: block;
 }
-.eyebrow--blue { color: var(--mandate); }
+.eyebrow--mandate { color: var(--mandate); }
 .eyebrow--muted { color: var(--slate); }
 
 .lede { font-size: 18px; color: var(--slate); max-width: 56ch; }
@@ -107,7 +118,7 @@ p  { margin: 0 0 1em; }
   border: 1px solid var(--line);
   border-left: 3px solid var(--mandate);
   background: repeating-linear-gradient(
-    -45deg, transparent 0 6px, rgba(11,95,165,.045) 6px 12px);
+    -45deg, transparent 0 6px, rgba(12,110,98,.05) 6px 12px);
   padding: 7px 10px;
   display: block;
   word-spacing: .1em;
@@ -121,11 +132,31 @@ p  { margin: 0 0 1em; }
 }
 
 /* Layout ------------------------------------------------------------- */
-.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); position: relative; z-index: 1; }
 .section { padding: 84px 0; }
 .section--tight { padding: 56px 0; }
-.dark { background: var(--ink); color: var(--concrete); }
-.band { background: var(--concrete); }
+
+/* Dark and banded surfaces carry a faint hatch plus a soft ambient wash so
+   they read as material rather than flat fill. Both are token-derived. */
+.dark {
+  background: var(--ink); color: var(--concrete);
+  position: relative; isolation: isolate;
+}
+.dark::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 18% 0%, rgba(12,110,98,.16), transparent 62%),
+    radial-gradient(90% 70% at 100% 100%, rgba(224,162,43,.055), transparent 58%),
+    var(--hatch-dark);
+}
+.band {
+  background: var(--concrete);
+  position: relative; isolation: isolate;
+}
+.band::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: var(--hatch-light);
+}
 .rule { height: 1px; background: var(--line); border: 0; margin: 0; }
 
 /* Header ------------------------------------------------------------- */
@@ -136,18 +167,28 @@ p  { margin: 0 0 1em; }
 }
 .masthead__in {
   max-width: var(--max); margin: 0 auto; padding: 0 var(--gut);
-  height: 66px; display: flex; align-items: center; gap: 28px;
+  height: 74px; display: flex; align-items: center; gap: 28px;
 }
-.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
-.brand__flame { width: 22px; height: 26px; flex: none; }
-.brand__txt { display: flex; flex-direction: column; line-height: 1; }
-.brand__parent {
-  font-family: var(--f-mono); font-size: 8.5px; letter-spacing: .2em;
-  color: #7E96A3; text-transform: uppercase; margin-bottom: 3px;
+
+/* Brand lockup — the company name leads, the descriptor supports it.
+   .brand__mark is the single drop-in point for a supplied logo file. */
+.brand { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+.brand__mark {
+  display: grid; place-items: center; flex: none;
+  width: 34px; height: 34px;
+}
+.brand__flame { width: 100%; height: 100%; }
+.brand__txt {
+  display: flex; flex-direction: column; gap: 4px; line-height: 1;
+  padding-left: 13px; border-left: 1px solid var(--line-dark);
 }
 .brand__name {
-  font-family: var(--f-display); font-weight: 800; font-size: 19px;
-  letter-spacing: .01em; color: #fff; text-transform: uppercase;
+  font-family: var(--f-display); font-weight: 800; font-size: 23px;
+  letter-spacing: -.005em; color: #fff; text-transform: uppercase;
+}
+.brand__parent {
+  font-family: var(--f-mono); font-size: 9.5px; letter-spacing: .2em;
+  color: #93AAB6; text-transform: uppercase;
 }
 
 .nav { display: flex; gap: 26px; margin-left: auto; }
@@ -220,7 +261,8 @@ p  { margin: 0 0 1em; }
 .gate { margin-top: 76px; border-top: 1px solid var(--line-dark); padding: 34px 0 76px; }
 .gate__head { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 26px; }
 .gate__head p { margin: 0; font-size: 14px; color: #7E96A3; }
-.gate__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+/* Six categories read best three-up — two even rows of pictogram discs. */
+.gate__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .disc {
   display: flex; flex-direction: column; align-items: center; gap: 12px;
   text-decoration: none; padding: 22px 8px 18px;
@@ -228,7 +270,7 @@ p  { margin: 0 0 1em; }
   background: var(--steel);
   transition: border-color .15s, transform .15s, background .15s;
 }
-.disc:hover { border-color: var(--mandate); background: #17394B; transform: translateY(-2px); }
+.disc:hover { border-color: var(--mandate); background: #14343A; transform: translateY(-2px); }
 .disc__sign {
   width: 62px; height: 62px; border-radius: 50%;
   background: var(--mandate); display: grid; place-items: center; flex: none;
@@ -345,7 +387,7 @@ p  { margin: 0 0 1em; }
   .nav { display: none; }
   .nav[data-open="true"] {
     display: flex; flex-direction: column; gap: 0;
-    position: absolute; top: 66px; left: 0; right: 0;
+    position: absolute; top: 74px; left: 0; right: 0;
     background: var(--ink); border-bottom: 1px solid var(--line-dark); padding: 8px var(--gut) 16px;
   }
   .nav[data-open="true"] a { padding: 13px 0; border-bottom: 1px solid var(--line-dark); }
@@ -359,6 +401,12 @@ p  { margin: 0 0 1em; }
 }
 
 @media (max-width: 560px) {
+  /* Keep the name readable at 360px; the descriptor and divider give way first. */
+  .brand__name { font-size: 18px; }
+  .brand__parent { display: none; }
+  .brand__txt { padding-left: 0; border-left: 0; }
+  .brand__mark { width: 28px; height: 28px; }
+  .brand { gap: 9px; }
   .gate__grid { grid-template-columns: repeat(2, 1fr); }
   .grid { grid-template-columns: 1fr; }
   .foot__grid { grid-template-columns: 1fr; }
@@ -504,4 +552,68 @@ p  { margin: 0 0 1em; }
   .req { grid-template-columns: 1fr; }
   .pick { flex-direction: column; align-items: stretch; }
   .pick .add { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   Scroll reveal pass — SEPARATELY QUOTED ADD-ON, SHIPPED DISABLED.
+
+   Nothing in this block applies unless <body> carries the `motion` class.
+   The default build is completely static, so this costs nothing visually
+   and nothing at runtime until enabled.
+
+   To enable:
+     · permanently — add class="motion" to <body>
+     · for a demo  — append ?motion=1 to any URL (app.js reads it)
+
+   Reduced motion is honoured twice over: the global
+   prefers-reduced-motion block near the top of this file zeroes every
+   animation duration, and app.js refuses to start the observer at all.
+
+   Transform and opacity only — both compositor-friendly, so no layout
+   thrash on scroll.
+   ========================================================================== */
+
+.motion [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  will-change: opacity, transform;
+}
+
+.motion [data-reveal][data-inview="true"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .55s cubic-bezier(.22, .61, .36, 1),
+    transform .55s cubic-bezier(.22, .61, .36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Once revealed, drop the compositor hint so long pages don't hold layers. */
+.motion [data-reveal][data-inview="true"].is-settled { will-change: auto; }
+
+/* Hero copy and facts enter on load rather than on scroll — they are already
+   in view, and waiting for an intersection would read as a stall. */
+.motion .hero__grid > div > *,
+.motion .hero__facts { animation: os-rise .6s cubic-bezier(.22,.61,.36,1) both; }
+.motion .hero__grid > div > *:nth-child(1) { animation-delay: .04s; }
+.motion .hero__grid > div > *:nth-child(2) { animation-delay: .10s; }
+.motion .hero__grid > div > *:nth-child(3) { animation-delay: .16s; }
+.motion .hero__grid > div > *:nth-child(4) { animation-delay: .22s; }
+.motion .hero__facts                       { animation-delay: .28s; }
+
+@keyframes os-rise {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Belt-and-braces: if the OS asks for reduced motion, show everything at rest
+   even when the flag is on and even if JS never runs. */
+@media (prefers-reduced-motion: reduce) {
+  .motion [data-reveal],
+  .motion .hero__grid > div > *,
+  .motion .hero__facts {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }

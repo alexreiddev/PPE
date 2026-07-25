@@ -167,6 +167,14 @@
           ' <span class="chip__n">' + n + '</span></a></li>';
       }).join('');
 
+    /* Escape a value destined for an HTML attribute. Product copy is
+       author-controlled, but alt text is prose and may contain quotes. */
+    function attr(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
     function sheet(p) {
       var c = category(p.cat);
       var picker = '';
@@ -179,12 +187,19 @@
           }).join('') + '</select></div>';
       }
 
+      /* Image slot. A product with `photo` set shows the photograph; without
+         one it falls back to the category pictogram, so an unphotographed
+         line still looks deliberate. Adding imagery is a data edit in
+         data.js — see the product shape documented at the top of that file. */
+      var visual = p.photo
+        ? '<img class="sheet__photo" src="' + attr(p.photo) + '" alt="' +
+            attr(p.photoAlt || (p.brand + ' ' + p.name)) + '" loading="lazy" decoding="async">'
+        : '<span class="sheet__sign"><svg><use href="#' + c.icon + '"></use></svg></span>';
+
       return '' +
       '<article class="sheet" data-id="' + p.id + '" data-cat="' + p.cat + '">' +
-        /* Image slot — replace .sheet__sign with
-           <img class="sheet__photo" src="…" alt="…"> when photos are licensed. */
         '<div class="sheet__panel">' +
-          '<span class="sheet__sign"><svg><use href="#' + c.icon + '"></use></svg></span>' +
+          visual +
           '<span class="sheet__brand">' + p.brand + '</span>' +
           '<span class="sheet__origin">' + p.origin + '</span>' +
         '</div>' +
@@ -348,7 +363,7 @@
         function finish(delivered) {
           $('#enquiry-body').innerHTML =
             '<div class="receipt">' +
-              '<span class="eyebrow eyebrow--blue">' +
+              '<span class="eyebrow eyebrow--mandate">' +
                 (delivered ? 'Enquiry received' : 'Enquiry prepared') + '</span>' +
               '<h2>' + (delivered ? 'We have your list' : 'Send it through') + '</h2>' +
               '<p class="receipt__ref">' + ref + '</p>' +
@@ -398,7 +413,7 @@
 
       function done(delivered) {
         form.innerHTML = '<div class="receipt">' +
-          '<span class="eyebrow eyebrow--blue">' + (delivered ? 'Enquiry received' : 'Could not send') + '</span>' +
+          '<span class="eyebrow eyebrow--mandate">' + (delivered ? 'Enquiry received' : 'Could not send') + '</span>' +
           '<h2>' + (delivered ? 'Thank you' : 'Try email instead') + '</h2>' +
           '<p>' + (delivered
             ? 'One of our team replies within one working day. For anything urgent, call the number opposite.'
@@ -412,6 +427,55 @@
     });
   }
 
+  /* ---------- scroll reveal (separately quoted add-on, off by default) ----
+     Disabled unless <body class="motion">, or ?motion=1 on the URL for a
+     demo without editing files. Everything here is additive: with the flag
+     absent the function returns immediately and the page stays static.
+     Styling lives at the end of site.css.                                */
+  function initReveal() {
+    var body = document.body;
+
+    /* ?motion=1 turns the flag on at runtime, for demos. */
+    if (/[?&]motion=1\b/.test(window.location.search)) body.classList.add('motion');
+    if (!body.classList.contains('motion')) return;
+
+    /* Never animate for visitors who asked not to. */
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduced && reduced.matches) return;
+
+    /* Without IntersectionObserver, leave content at rest rather than
+       hiding it — a reveal that never fires would hide the catalogue. */
+    if (!('IntersectionObserver' in window)) return;
+
+    var groups = ['.gate__grid .disc', '.sheet', '.steps .step', '.req__item'];
+    var targets = [];
+
+    groups.forEach(function (sel) {
+      var found = Array.prototype.slice.call(document.querySelectorAll(sel));
+      found.forEach(function (el, i) {
+        el.setAttribute('data-reveal', '');
+        /* Stagger within the group, capped so late items don't lag. */
+        el.style.setProperty('--reveal-delay', Math.min(i * 60, 300) + 'ms');
+        targets.push(el);
+      });
+    });
+
+    if (!targets.length) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        el.setAttribute('data-inview', 'true');
+        io.unobserve(el);
+        /* Release the compositor hint once the transition has run. */
+        window.setTimeout(function () { el.classList.add('is-settled'); }, 900);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+
+    targets.forEach(function (el) { io.observe(el); });
+  }
+
   /* ---------- boot ------------------------------------------------------ */
   document.addEventListener('DOMContentLoaded', function () {
     initNav();
@@ -419,5 +483,6 @@
     initProducts();
     initEnquiry();
     initContact();
+    initReveal();   /* last — product sheets must exist before observing */
   });
 })();

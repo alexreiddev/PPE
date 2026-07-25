@@ -48,7 +48,33 @@ Three further categories from the client's company profile — head protection, 
 
 **Datasheet layout, not a product grid.** Four products in a filterable grid would look empty. Each line gets a full sheet with its spec table and certification strip.
 
-**No product photography.** Cards use category pictograms. Manufacturer imagery for Red Wing, ecom and Roughneck is normally available to authorised distributors and will make a real difference here, because buyers recognise these brands. Swap `.sheet__sign` in `sheet()` in `app.js` for `<img class="sheet__photo" src="…" alt="…">` — the CSS class already exists.
+**No product photography yet, but the slot is wired.** Lines without a photo fall back to
+the category pictogram, so they still look deliberate. To add imagery, set `photo` and
+`photoAlt` on the product in `data.js` — no template changes, `sheet()` picks it up:
+
+```js
+photo:    'assets/img/rw-3228.jpg',
+photoAlt: 'Red Wing Petroking 3228 six-inch boot, side view'
+```
+
+Manufacturer imagery for Red Wing, ecom and Roughneck is normally available to authorised
+distributors and will make a real difference here, because buyers recognise these brands.
+
+**Scroll animations are built but disabled.** They are a separately quoted add-on, so the
+default build is completely static — no reveal classes applied, no observer running. To
+turn them on:
+
+- **permanently** — add `class="motion"` to `<body>`
+- **for a demo** — append `?motion=1` to any URL, no file editing needed
+
+Styling sits at the end of `site.css`; `initReveal()` in `app.js` drives it with an
+`IntersectionObserver`, animating only `transform` and `opacity`. Reduced-motion visitors
+never see motion even with the flag on — the observer refuses to start and the CSS holds
+everything at rest.
+
+**Surface texture, not photography.** Dark and banded sections carry a faint hatch and a
+soft ambient wash derived from the palette tokens (`--hatch-dark` / `--hatch-light`). This
+is deliberately *not* the background photography treatment, which is separate work.
 
 ## Placeholders to replace before launch
 
@@ -56,6 +82,11 @@ Three further categories from the client's company profile — head protection, 
 2. **Trade licence, VAT registration and distributor authorisations** on the contact page.
 3. Confirm the client is an authorised distributor for Red Wing, ecom instruments and Roughneck before the brand names go live — those are trademarks, and distributors usually have brand-usage terms.
 4. Add a `sitemap.xml` and uncomment the line in `robots.txt`.
+5. **`og:image` and `canonical` point at `https://oasisstargt.com`** — correct from the
+   moment DNS switches, but they will not resolve while the site is only on
+   `oasis-star.netlify.app`. Social previews shared from the preview URL will show no
+   image until the domain is live. Nothing to change at launch; just don't be surprised
+   by it beforehand.
 
 ## One thing worth raising with the client
 

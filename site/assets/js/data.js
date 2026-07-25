@@ -7,7 +7,17 @@
 
    Product shape:
      id, brand, model, name, cat, lede, specs[[label, value]],
-     standards[], sizes { label, options[{value,label,code}] } | null
+     standards[], sizes { label, options[{value,label,code}] } | null,
+     photo, photoAlt                                          (both optional)
+
+   Product photography: set `photo` to a path under assets/img/ and `photoAlt`
+   to a real description, and the datasheet renders the photo in place of the
+   category pictogram. Leave both unset and the pictogram shows instead, so
+   lines without licensed imagery still look deliberate. Adding a photo is a
+   data edit only — no template changes needed.
+
+     photo:    'assets/img/rw-3228.jpg',
+     photoAlt: 'Red Wing Petroking 3228 six-inch boot, side view'
 */
 
 window.OS_CATEGORIES = [

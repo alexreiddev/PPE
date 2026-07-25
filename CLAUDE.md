@@ -82,7 +82,18 @@ the enquiry page. Any motion work must keep the reduced-motion path — `taste-s
 requires this above `MOTION_INTENSITY > 3` and so does this project.
 
 **Scroll animations are a separately quoted add-on** (AED 1,500). Don't ship a motion
-pass as incidental polish.
+pass as incidental polish. One is already built and deliberately **disabled** — gated
+behind a `motion` class on `<body>`, with `?motion=1` as a runtime demo toggle. Leave it
+off unless the client commissions it; do not "helpfully" enable it by default.
+
+**Surface texture is not photography.** `--hatch-dark` / `--hatch-light` and the ambient
+washes on `.dark` / `.band` are token-derived depth. Background *photography* is a
+separate AED 4,000–8,000 quote — don't add image assets to satisfy a design suggestion,
+and don't reach for stock or `picsum.photos` placeholders.
+
+**Product photography is data, not markup.** Set `photo` / `photoAlt` on a product in
+`data.js`; `sheet()` falls back to the category pictogram when they're absent. Never
+invent product imagery or specs.
 
 ## Tuning the dials
 

@@ -20,6 +20,25 @@ The body below is preserved as written. These points supersede it:
   [`catalogue-expansion-draft.md`](catalogue-expansion-draft.md). It adds Ansell, ATG,
   Reebok, and Taedylyn, which widens the unresolved distributor-authorisation question
   from three brands to seven.
+- **A design pass has run against the CEO's four pre-meeting requests.** What changed and
+  what deliberately did not:
+  - *Logo/name prominence* — masthead lockup rebuilt: hierarchy inverted so the company
+    name leads (it previously sat *below* "General Trading · UAE"), name 19px → 23px, mark
+    22px → 34px, masthead 66px → 74px. `.brand__mark` in the markup is the single
+    drop-in point for her logo file when it arrives. **AED 2,500 logo design still open.**
+  - *Product images* — no imagery invented. The slot is wired instead: set `photo` /
+    `photoAlt` in `data.js` and the datasheet swaps the pictogram for the photograph.
+    Adding photos is now a data edit, not a code edit.
+  - *Background imagery* — token-derived hatch and ambient wash only, no photographs.
+    **AED 4,000–8,000 photography shoot deliberately untouched and still sellable.**
+  - *Scroll animations* — full pass built but **shipped disabled**. Demo with `?motion=1`
+    on any URL. **AED 1,500 add-on intact.**
+  - Also fixed: stale "Zone 1 certified handhelds" copy in 9 places, missing `og:image` on
+    all pages (a branded 1200×630 card is now at `site/assets/og-card.png`), and two
+    leftover blue values that predated the teal palette.
+- **The design-system notes below are slightly out of date**: `.card__photo` does not
+  exist in the CSS — only `.sheet__photo` does, and it is now driven by the `photo` field
+  rather than needing a manual template edit.
 
 ---
 
