@@ -13,7 +13,9 @@
 > 1. **Brand names are still gated.** Distributor authorisation is unconfirmed for every
 >    brand here (Red Wing, ecom, Ansell/Ringers, ATG, Reebok, Taedylinn, Avon). The research
 >    itself lists this as an open item (§7). No brand name goes live until it's confirmed.
-> 2. **Specs must be checked against the original PDFs, not this summary.** The source files
+> 2. **Verified 29 Oct 2026 against the four source PDFs — results in
+>    [`datasheet-verification.md`](datasheet-verification.md).** The notes below were written before that check.
+>    **Specs must be checked against the original PDFs, not this summary.** The source files
 >    (`93276.pdf`, `AVON_NH15_H2S_Brochure.pdf`, the Taedylinn W2849 datasheet, the Red Wing
 >    flyers) aren't in this repo. Discrepancies already visible in the summary:
 >    - W2849 lists **EN ISO 11611 Class 1** under standards but "Class 2 welding protection"

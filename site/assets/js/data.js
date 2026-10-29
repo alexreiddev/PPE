@@ -1,6 +1,9 @@
 /* Oasis Star General Trading — catalogue data.
    Sourced from the client's 2025 product catalogue. Four documented lines
    plus the categories listed in their profile that have no product detail yet.
+   The 267 ratings come from the Ringers Impact Protection catalogue (2019),
+   which corrects the client catalogue: its "level 2" is ISEA 138 impact, not
+   ANSI cut, and EN 388 puncture is 3, not 2. See docs/datasheet-verification.md.
 
    The ecom Ex-Handy 10 DZ1 was in the 2025 catalogue but is discontinued for
    Oasis Star and has been removed.
@@ -87,15 +90,17 @@ window.OS_PRODUCTS = [
     lede: 'An impact glove with TPR guards across the back of the hand and fingers, and a TefLoc palm that keeps its grip in oil. High-visibility build for engineering, manufacturing, oil and gas, and utilities work.',
     specs: [
       ['Impact', 'TPR protection on back of hand and fingers'],
-      ['Cut, CE', 'EN 388 level 2 cut and puncture'],
-      ['Cut, ANSI', 'ANSI/ISEA level 2'],
+      ['Impact rating', 'ANSI/ISEA 138 level 2'],
+      ['EN 388', '4243BP: abrasion 4, cut 2, tear 4, puncture 3, ISO cut B, impact pass'],
       ['Grip', 'TefLoc palm and finger, oil resistant'],
-      ['Wrist', 'Extended Airprene closure'],
+      ['Liner', 'Knit Kevlar'],
+      ['Wrist', 'Extended Airprene closure with TPR pull tab'],
       ['Stitching', 'Kevlar stitched palm'],
       ['Visibility', 'High-visibility design'],
+      ['Packaging', '5 pairs per bag, 50 pairs per carton'],
       ['Industries', 'Engineering, manufacturing, oil and gas, utilities']
     ],
-    standards: ['CE EN 388', 'ANSI/ISEA 105'],
+    standards: ['EN 388 4243BP', 'ANSI/ISEA 138 L2', 'EN 420'],
     sizes: {
       label: 'Size',
       options: [
