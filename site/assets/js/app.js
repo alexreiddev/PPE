@@ -231,7 +231,7 @@
         : '<span class="sheet__sign"><svg><use href="#' + c.icon + '"></use></svg></span>';
 
       return '' +
-      '<article class="sheet" data-id="' + p.id + '" data-cat="' + p.cat + '">' +
+      '<article class="sheet" id="' + p.id + '" data-id="' + p.id + '" data-cat="' + p.cat + '">' +
         '<div class="sheet__panel">' +
           visual +
           '<span class="sheet__brand">' + p.brand + '</span>' +
@@ -316,6 +316,13 @@
 
     var params = new URLSearchParams(window.location.search);
     applyFilter(params.get('cat') && category(params.get('cat')) ? params.get('cat') : 'all');
+
+    /* Deep links from the finder (products.html?cat=foot#rw-3228) arrive
+       before the sheets exist, so the browser cannot jump on its own. */
+    if (window.location.hash) {
+      var target = document.getElementById(window.location.hash.slice(1));
+      if (target) { target.scrollIntoView(); }
+    }
   }
 
   /* ---------- enquiry page ---------------------------------------------- */
@@ -444,6 +451,108 @@
     render();
   }
 
+  /* ---------- compliance finder ------------------------------------------- */
+  /* Pick hazards (and optionally an industry); the finder returns the lines
+     whose datasheets cover them, with the proof for each. Hazards no line
+     covers are listed too, with a WhatsApp request, rather than hidden. */
+  function initFinder() {
+    var host = $('#finder');
+    if (!host) { return; }
+    var picked = {};
+    var industry = '';
+
+    function chip(kind, id, label) {
+      return '<button type="button" class="chip fchip" data-kind="' + kind + '" data-id="' + id +
+        '" aria-pressed="false">' + label + '</button>';
+    }
+
+    var areas = [];
+    window.OS_HAZARDS.forEach(function (h) { if (areas.indexOf(h.area) < 0) { areas.push(h.area); } });
+
+    $('#finder-hazards', host).innerHTML = areas.map(function (a) {
+      return '<div class="finder__group"><span class="pick__label">' + a + '</span><div class="finder__chips">' +
+        window.OS_HAZARDS.filter(function (h) { return h.area === a; })
+          .map(function (h) { return chip('hazard', h.id, h.label); }).join('') +
+        '</div></div>';
+    }).join('');
+    $('#finder-industries', host).innerHTML = chip('industry', '', 'Any industry') +
+      window.OS_INDUSTRIES.map(function (i) { return chip('industry', i.id, i.label); }).join('');
+
+    function hazard(id) { return window.OS_HAZARDS.filter(function (h) { return h.id === id; })[0]; }
+
+    function render() {
+      $$('.fchip', host).forEach(function (b) {
+        var on = b.dataset.kind === 'hazard' ? !!picked[b.dataset.id] : b.dataset.id === industry;
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+
+      var ids = Object.keys(picked);
+      var out = $('#finder-results', host);
+      if (!ids.length) {
+        out.innerHTML = '<p class="cert__note">Pick one or more hazards from your risk assessment to see the lines that cover them.</p>';
+        return;
+      }
+
+      var matches = window.OS_PRODUCTS.map(function (p) {
+        var hits = ids.filter(function (h) { return p.covers && p.covers[h]; });
+        return { p: p, hits: hits };
+      }).filter(function (m) {
+        return m.hits.length && (!industry || (m.p.industries || []).indexOf(industry) >= 0);
+      }).sort(function (a, b) { return b.hits.length - a.hits.length; });
+
+      var covered = {};
+      matches.forEach(function (m) { m.hits.forEach(function (h) { covered[h] = true; }); });
+      var gaps = ids.filter(function (h) { return !covered[h]; });
+
+      var kit = 'Compliance finder request' +
+        '\nHazards: ' + ids.map(function (h) { return hazard(h).label; }).join(', ') +
+        (industry ? '\nIndustry: ' + window.OS_INDUSTRIES.filter(function (i) { return i.id === industry; })[0].label : '') +
+        (matches.length ? '\nSuggested: ' + matches.map(function (m) { return m.p.brand + ' ' + m.p.model; }).join(', ') : '');
+
+      out.innerHTML =
+        (matches.length ? matches.map(function (m) {
+          var p = m.p, c = category(p.cat);
+          return '<article class="cert">' +
+            '<span class="line__sign"><svg><use href="#' + c.icon + '"></use></svg></span>' +
+            '<div class="cert__body">' +
+              '<span class="sheet__eyebrow">' + c.label + ' &middot; Model ' + p.model +
+                ' &middot; covers ' + m.hits.length + ' of ' + ids.length + '</span>' +
+              '<h3 class="cert__name">' + p.brand + ' &mdash; ' + p.name + '</h3>' +
+              '<span class="marking">' + p.standards.join(' &nbsp;/&nbsp; ') + '</span>' +
+              '<ul class="cert__list">' + m.hits.map(function (h) {
+                return '<li><strong>' + hazard(h).label + ':</strong> ' + p.covers[h] + '</li>';
+              }).join('') + '</ul>' +
+              '<div class="docs">' +
+                '<a class="doc" href="products.html?cat=' + p.cat + '#' + p.id + '">Datasheet and sizes</a>' +
+                '<a class="doc doc--quiet" href="certificates.html#' + p.id + '">Certification details</a>' +
+              '</div>' +
+            '</div></article>';
+        }).join('') : '') +
+        (gaps.length
+          ? '<p class="cert__note finder__gap">No documented line covers <strong>' +
+              gaps.map(function (h) { return hazard(h).label.toLowerCase(); }).join(', ') +
+              (industry ? '</strong> for this industry' : '</strong>') +
+              ' yet. We source to your specification &mdash; send the standard you need to meet.</p>'
+          : '') +
+        '<div class="actions" style="margin-top:20px">' +
+          '<a class="btn btn--primary" href="' + waLink(kit) + '" target="_blank" rel="noopener">Quote this kit on WhatsApp</a>' +
+          '<a class="btn btn--quiet" href="products.html">Build the list in the catalogue</a>' +
+        '</div>';
+    }
+
+    host.addEventListener('click', function (e) {
+      var b = e.target.closest('.fchip');
+      if (!b) { return; }
+      if (b.dataset.kind === 'hazard') {
+        if (picked[b.dataset.id]) { delete picked[b.dataset.id]; } else { picked[b.dataset.id] = true; }
+      } else {
+        industry = b.dataset.id;
+      }
+      render();
+    });
+    render();
+  }
+
   /* ---------- certificates page ------------------------------------------ */
   /* One row per documented line, built from the same data as the catalogue
      so the register can never drift from the datasheets. */
@@ -569,6 +678,7 @@
     initEnquiry();
     initContact();
     initCertificates();
+    initFinder();
     initReveal();   /* last — product sheets must exist before observing */
   });
 })();

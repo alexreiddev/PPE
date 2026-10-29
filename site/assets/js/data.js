@@ -49,6 +49,31 @@ window.OS_CATEGORIES = [
     note: 'Coveralls and reflective vests', stocked: false }
 ];
 
+/* Compliance finder. Each product lists the hazards it covers in `covers`,
+   keyed by hazard id, with the standard or datasheet line that proves it —
+   the finder only recommends what a datasheet supports. Industries are where
+   the manufacturer's own material says the line is used. */
+window.OS_HAZARDS = [
+  { id: 'impact',     label: 'Back-of-hand impact',      area: 'Hands' },
+  { id: 'cut',        label: 'Cuts and abrasion',        area: 'Hands' },
+  { id: 'grip',       label: 'Oily or wet grip',         area: 'Hands' },
+  { id: 'toe',        label: 'Falling or rolling loads', area: 'Feet' },
+  { id: 'electrical', label: 'Electrical hazard',        area: 'Feet' },
+  { id: 'puncture',   label: 'Nails and sharp debris',   area: 'Feet' },
+  { id: 'slip',       label: 'Slippery floors',          area: 'Feet' },
+  { id: 'chemical',   label: 'Oil, fuel and chemicals',  area: 'Feet' },
+  { id: 'explosive',  label: 'Explosive atmosphere',     area: 'Devices' },
+  { id: 'lone',       label: 'Lone working',             area: 'Devices' }
+];
+
+window.OS_INDUSTRIES = [
+  { id: 'oilgas',       label: 'Oil and gas' },
+  { id: 'construction', label: 'Construction' },
+  { id: 'refinery',     label: 'Refinery and chemical' },
+  { id: 'shipyard',     label: 'Shipyard and marine' },
+  { id: 'workshop',     label: 'Workshop and logistics' }
+];
+
 function euRange(a, b) {
   var out = [];
   for (var i = a; i <= b; i++) { out.push({ value: String(i), label: 'EU ' + i }); }
@@ -78,6 +103,14 @@ window.OS_PRODUCTS = [
       ['Origin', 'Made in Italy'],
       ['Best for', 'Oil and gas, refinery and heavy-industry crews facing electrical, puncture and chemical hazards underfoot']
     ],
+    covers: {
+      toe: 'Non-metallic safety toe, EN ISO 20345 / ASTM F2413',
+      electrical: 'EH rated',
+      puncture: 'PR, Swen-Flex puncture-resistant insole',
+      slip: 'SR, TredMax slip-resistant outsole',
+      chemical: 'ForceGuard chemical, oil and gas resistance'
+    },
+    industries: ['oilgas', 'construction', 'refinery'],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
   },
@@ -98,6 +131,14 @@ window.OS_PRODUCTS = [
       ['Origin', 'Made in Italy'],
       ['Best for', 'The same hazards as the 3228 where the work needs ankle support: rough ground, scaffolds, rig floors']
     ],
+    covers: {
+      toe: 'Non-metallic safety toe (NT), EN ISO 20345 / ASTM F2413',
+      electrical: 'EH rated',
+      puncture: 'PR, Swen-Flex puncture-resistant insole',
+      slip: 'SR, TredMax slip-resistant outsole',
+      chemical: 'ForceGuard chemical, oil and gas resistance'
+    },
+    industries: ['oilgas', 'construction', 'refinery'],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'NT', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
   },
@@ -119,6 +160,13 @@ window.OS_PRODUCTS = [
       ['Origin', 'Made in Vietnam'],
       ['Best for', 'Logistics, shipyard, maintenance and plant crews who find full boots too heavy and hot']
     ],
+    covers: {
+      toe: 'Aluminium safety toe, ASTM F2413-24 I/C',
+      electrical: 'EH rated',
+      slip: 'SR rated',
+      chemical: 'Outsole rated best for oil, gas and chemical resistance'
+    },
+    industries: ['oilgas', 'construction', 'refinery', 'shipyard'],
     standards: ['ASTM F2413-24', 'I/C', 'EH', 'SR'],
     sizes: { label: 'Size and width', options: usRun('D', 7, 15).concat(usRun('E', 7, 15), usRun('H', 8, 13)) }
   },
@@ -141,6 +189,12 @@ window.OS_PRODUCTS = [
       ['Industries', 'Engineering, manufacturing, oil and gas, utilities'],
       ['Best for', 'Rig floors, rigging and pipe handling, where impact and pinch points cause most hand injuries']
     ],
+    covers: {
+      impact: 'ANSI/ISEA 138 level 2, EN 388 impact pass',
+      cut: 'EN 388 4243BP: abrasion 4, cut 2',
+      grip: 'TefLoc palm, oil resistant'
+    },
+    industries: ['oilgas', 'construction'],
     standards: ['EN 388 4243BP', 'ANSI/ISEA 138 L2', 'EN 420'],
     sizes: {
       label: 'Size',
@@ -174,6 +228,10 @@ window.OS_PRODUCTS = [
       ['ANSI/ISEA 105', 'Abrasion 3, cut A1, puncture 2'],
       ['Best for', 'Automotive workshops, fleet maintenance, logistics and light assembly']
     ],
+    covers: {
+      cut: 'EN 388 2121X; ANSI/ISEA 105 cut A1, abrasion 3'
+    },
+    industries: ['workshop'],
     standards: ['EN 388 2121X', 'EN ISO 21420', 'CE Cat. II'],
     sizes: null
   },
@@ -199,6 +257,11 @@ window.OS_PRODUCTS = [
       ['Approvals', 'PTCRB, GCF, Google ARCore ready'],
       ['Best for', 'Crews in Zone 1/21 areas who cannot carry an ordinary phone, and lone workers who need an alarm button']
     ],
+    covers: {
+      explosive: 'Certified for Zone 1/21 and Div 1',
+      lone: 'Lone worker protection, programmable alarm and PTT buttons'
+    },
+    industries: ['oilgas', 'refinery'],
     standards: ['ATEX Zone 1/21', 'Div 1', 'PTCRB', 'GCF'],
     sizes: null
   }

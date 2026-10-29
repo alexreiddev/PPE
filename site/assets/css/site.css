@@ -442,7 +442,7 @@ p  { margin: 0 0 1em; }
 .sheet {
   display: grid; grid-template-columns: 268px 1fr; gap: 0;
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
-  overflow: hidden; margin-bottom: 22px;
+  overflow: hidden; margin-bottom: 22px; scroll-margin-top: 96px;
 }
 /* Image slot. Replace .sheet__sign with <img class="sheet__photo" src="…">
    once manufacturer imagery is licensed. */
@@ -611,6 +611,16 @@ p  { margin: 0 0 1em; }
 .guide__item h3 { margin: 0; }
 .guide__item p { margin: 0; font-size: 14.5px; color: var(--slate); }
 .guide__item .specs { grid-template-columns: 1fr; }
+
+/* Compliance finder ------------------------------------------------------ */
+.finder { display: flex; flex-direction: column; gap: 26px; }
+.finder__step h3 { margin: 4px 0 12px; }
+.finder__step .step__n { font-size: 22px; }
+.finder__group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 7px; }
+.finder__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fchip { cursor: pointer; font: inherit; font-family: var(--f-mono); font-size: 11px; }
+.fchip[aria-pressed="true"] { background: var(--mandate); border-color: var(--mandate); color: #fff; }
+.finder__gap { border-left: 3px solid var(--signal); padding: 10px 14px; background: var(--paper); margin-top: 14px; }
 
 @media (max-width: 780px) {
   .guide { grid-template-columns: 1fr; }
