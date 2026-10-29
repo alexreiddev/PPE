@@ -57,6 +57,38 @@ Licensed MIT, `Copyright (c) 2026 Leonxlnx`; the upstream licence is retained at
 `.claude/skills/llms.txt` is upstream's one-line index of all 13. It isn't a skill
 directory, so skill discovery ignores it; it's kept so the mirror matches upstream.
 
+### Other vendored skills
+
+Also in `.claude/skills/`, copied **verbatim** from these upstreams (pinned commit in
+brackets). Licences are in [`.claude/skills/licenses/`](.claude/skills/licenses/). See
+`CLAUDE.md` for which ones are in scope on this project.
+
+| Source | Skills | Licence |
+| --- | --- | --- |
+| [`heygen-com/hyperframes`](https://github.com/heygen-com/hyperframes) `skills/` [`22b53c0`] | 7 — `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `remotion-to-hyperframes`, `slideshow`, `figma`, `media-use` | Apache-2.0 |
+| [`googleworkspace/cli`](https://github.com/googleworkspace/cli) `skills/` [`a3768d0`] | 95 — `gws-*`, `recipe-*`, `persona-*` | Apache-2.0 |
+| [`nateherkai/scroll-craft`](https://github.com/nateherkai/scroll-craft) [`75d81f7`] | `scroll-craft` | MIT |
+| [`blader/humanizer`](https://github.com/blader/humanizer) [`0ef9fe5`] | `humanizer` (`SKILL.md` only) | MIT |
+| [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) `skills/` [`eb07f19`] | 24 | MIT |
+| [`expo/skills`](https://github.com/expo/skills) `plugins/expo/skills/` [`05754e7`] | 23 — `expo-*`, `eas-*` | MIT |
+| [`supabase/agent-skills`](https://github.com/supabase/agent-skills) `skills/` [`c9be0e9`] | `supabase`, `supabase-postgres-best-practices` | MIT |
+| [`stripe/ai`](https://github.com/stripe/ai) `skills/stripe-best-practices` [`d9c9287`] | `stripe-best-practices` | MIT |
+| [`microsoft/playwright-cli`](https://github.com/microsoft/playwright-cli) `skills/` [`b1a5903`] | `playwright-cli` | Apache-2.0 |
+| [`every-app/open-seo`](https://github.com/every-app/open-seo) `plugins/openseo/skills/` [`99d9a49`] | 12 — `seo-audit`, `local-seo`, `keyword-research`, … | MIT |
+
+Two items aren't plain skill folders:
+
+- **Claude Security** ([`anthropics/claude-plugins-official`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-security))
+  ships hooks, agents and scripts that only work as a plugin, so it's enabled in
+  [`.claude/settings.json`](.claude/settings.json) rather than copied. Run `/claude-security`.
+- **OpenSEO**'s skills call the OpenSEO MCP server, declared in [`.mcp.json`](.mcp.json).
+  It needs an OpenSEO account and asks for approval the first time.
+
+**Apify MCP Server** is not vendored; Apify is already configured as a user-level
+connector, so there's nothing to add to the repo.
+
+To re-sync, re-clone each upstream and copy the same paths over; none are edited locally.
+
 ## Using them
 
 The skills load automatically for any Claude Code session started in this repo, and

@@ -14,7 +14,8 @@ holds pricing floors and negotiation positions. Do not widen the publish dir.
 
 ## Skill selection — pick by project requirement
 
-Thirteen vendored frontend design skills live in `.claude/skills/`. All auto-load; the
+Thirteen vendored frontend design skills live in `.claude/skills/`, alongside the wider
+third-party set listed under "Other vendored skills" below. All auto-load; the
 directory name is the slash command. Choose by what the task actually requires:
 
 | Requirement | Skill |
@@ -39,6 +40,36 @@ oriented and its own scope note excludes dashboards, data tables, and multi-step
 product UI — it also explicitly targets landing pages and portfolios, which this is
 only partly. Reach for `/taste-skill` when building something new, not when polishing
 what's shipped.
+
+## Other vendored skills — scope on this project
+
+The rest of `.claude/skills/` is vendored from other upstreams (sources and pins in
+`README.md`). Having a skill installed is not permission to use it here; the guardrails
+below still win.
+
+**Useful on this site:**
+- `seo-audit`, `local-seo`, `keyword-research` and the other OpenSEO skills — most
+  need the OpenSEO MCP server (`.mcp.json`, needs an OpenSEO account). SEO work must not
+  touch locked tokens, signature elements, or gated brand names.
+- `playwright-cli` — needs the `playwright-cli` package; Playwright itself is already in
+  cloud sessions. Use it to check 360px layout, focus rings, and the print stylesheet.
+- `humanizer` — copy edits only. Never add brand names, product claims, or specs.
+- `frontend-ui-engineering`, `performance-optimization`, `shipping-and-launch`,
+  `security-and-hardening` and the other Addy Osmani skills — general practice; the
+  no-framework, no-build rule still holds.
+- `/claude-security` (enabled as a plugin in `.claude/settings.json`) — security scan.
+
+**Out of scope here without a client request or re-quote:**
+- `scroll-craft` — scroll animation is the separately quoted AED 1,500 add-on; the
+  existing motion pass stays disabled.
+- `stripe-best-practices` — enquiry flow, not checkout. No payment gateway.
+- `supabase`, `supabase-postgres-best-practices` — enquiries use Netlify Forms and
+  `localStorage`; no backend or database.
+- `expo-*`, `eas-*` — mobile apps; this is a static website.
+- `hyperframes*`, `slideshow`, `media-use`, `remotion-to-hyperframes`, `figma` — video
+  production. Don't use it to add video or motion to the site.
+- `gws-*`, `recipe-*`, `persona-*` — Google Workspace via the `gws` CLI (not installed).
+  Unrelated to the site; never put Workspace credentials in the repo.
 
 ## Guardrails the design skills must respect
 
