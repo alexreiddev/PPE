@@ -20,6 +20,13 @@ The body below is preserved as written. These points supersede it:
   [`catalogue-expansion-draft.md`](catalogue-expansion-draft.md). It adds Ansell, ATG,
   Reebok, and Taedylyn, which widens the unresolved distributor-authorisation question
   from three brands to seven.
+- **Source research for that list** (WhatsApp export, Ringers/Avon/Taedylinn PDFs, Red
+  Wing flyers, buyer pain points, 8 Oct offer terms) is in
+  [`market-research-2026-10.md`](market-research-2026-10.md). It adds Avon (NH15 escape
+  hood), so eight brands now await authorisation confirmation. Its review header lists spec
+  discrepancies and the suggestions that conflict with settled decisions.
+- **GoDaddy password treat as exposed** — it was sent as a screenshot in the WhatsApp
+  chat. Client to change it and enable 2-Step Verification.
 - **A design pass has run against the CEO's four pre-meeting requests.** What changed and
   what deliberately did not:
   - *Logo/name prominence* — masthead lockup rebuilt: hierarchy inverted so the company
