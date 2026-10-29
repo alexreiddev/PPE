@@ -25,6 +25,14 @@ The body below is preserved as written. These points supersede it:
   [`market-research-2026-10.md`](market-research-2026-10.md). It adds Avon (NH15 escape
   hood), so eight brands now await authorisation confirmation. Its review header lists spec
   discrepancies and the suggestions that conflict with settled decisions.
+- **Offer scope delivered (8 Oct Option 1 gaps closed):** WhatsApp quote button on every
+  page (`+971 56 182 1086`, `WA_NUMBER` in `app.js`), "Quote on WhatsApp" on every
+  datasheet pre-filled with model / standards / size / quantity, WhatsApp send on the
+  enquiry receipt; new `certificates.html` (register built from `data.js` plus a
+  markings guide) and `about.html`; optional `datasheet` / `certs` fields in `data.js`.
+  No manufacturer PDFs are published yet — each line offers "Request datasheet and
+  certificates" until the client clears redistribution. Phone placeholder replaced
+  site-wide; **email is still the wrong-domain placeholder `sales@oasisstar.ae`**.
 - **GoDaddy password treat as exposed** — it was sent as a screenshot in the WhatsApp
   chat. Client to change it and enable 2-Step Verification.
 - **A design pass has run against the CEO's four pre-meeting requests.** What changed and

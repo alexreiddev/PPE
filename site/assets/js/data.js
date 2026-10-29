@@ -12,6 +12,15 @@
      id, brand, model, name, cat, lede, specs[[label, value]],
      standards[], sizes { label, options[{value,label,code}] } | null,
      photo, photoAlt                                          (both optional)
+     datasheet                                                (optional)
+     certs[{ standard, body, ref }]                           (optional)
+
+   Documents: set `datasheet` to a PDF under assets/docs/ and the datasheet
+   and certificate register link it for download. Leave it unset and both
+   offer "Request datasheet and certificates" on WhatsApp instead. Only add
+   a manufacturer PDF once the client confirms it may be redistributed.
+   `certs` lists certificate details where the manufacturer publishes them,
+   e.g. { standard: 'EN ISO 11612', body: 'SATRA (NB 2777)', ref: '2777/12375-02' }.
 
    Product photography: set `photo` to a path under assets/img/ and `photoAlt`
    to a real description, and the datasheet renders the photo in place of the

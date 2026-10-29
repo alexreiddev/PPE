@@ -366,7 +366,7 @@ p  { margin: 0 0 1em; }
 
 /* Toast -------------------------------------------------------------- */
 .toast {
-  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 130%);
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, calc(100% + 40px));
   background: var(--ink); color: #fff; padding: 13px 20px; border-radius: var(--radius);
   border-left: 4px solid var(--amber); z-index: 90;
   font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em;
@@ -417,7 +417,8 @@ p  { margin: 0 0 1em; }
 }
 
 @media print {
-  .masthead, .foot, .toast, .btn, .add, .stepper, .link-danger { display: none !important; }
+  .masthead, .foot, .toast, .btn, .add, .stepper, .link-danger,
+  .wa, .wa-quote, .docs { display: none !important; }
   body { background: #fff; }
 }
 
@@ -552,6 +553,73 @@ p  { margin: 0 0 1em; }
   .req { grid-template-columns: 1fr; }
   .pick { flex-direction: column; align-items: stretch; }
   .pick .add { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   WhatsApp, documents and the certificate register.
+   WhatsApp is the fastest quote channel for UAE buyers, so it sits on every
+   page and every datasheet. It stays in the site palette — the label, not
+   a brand colour, says what it is.
+   ========================================================================== */
+
+.wa {
+  position: fixed; right: 18px; bottom: 18px; z-index: 40;
+  display: inline-flex; align-items: center; gap: 9px;
+  background: var(--mandate); color: #fff; text-decoration: none;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 11px 16px 11px 12px; border-radius: 100px;
+  box-shadow: 0 6px 20px rgba(17,26,28,.28);
+  transition: background .15s;
+}
+.wa:hover { background: var(--mandate-d); }
+.wa svg { width: 22px; height: 22px; fill: #fff; flex: none; }
+
+.wa-quote {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 14px;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em;
+  color: var(--mandate); text-decoration: none;
+  border: 1px solid var(--mandate); border-radius: var(--radius); background: #fff;
+}
+.wa-quote:hover { background: var(--mandate); color: #fff; }
+
+.docs { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.doc {
+  font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .06em;
+  color: var(--mandate); text-decoration: underline; text-underline-offset: 3px;
+}
+.doc:hover { color: var(--mandate-d); }
+.doc--quiet { color: var(--slate); }
+
+.mono { font-family: var(--f-mono); font-size: .92em; }
+
+.cert {
+  display: grid; grid-template-columns: 54px 1fr; gap: 16px;
+  padding: 22px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 96px;
+}
+.cert[data-target="true"] .cert__name { color: var(--mandate); }
+.cert__body { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.cert__name { margin: 0; }
+.cert__list { margin: 0; padding-left: 18px; font-size: 14px; }
+.cert__note { margin: 0; font-size: 14px; color: var(--slate); }
+
+.guide { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.guide__item {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; display: flex; flex-direction: column; gap: 10px;
+}
+.guide__item h3 { margin: 0; }
+.guide__item p { margin: 0; font-size: 14.5px; color: var(--slate); }
+.guide__item .specs { grid-template-columns: 1fr; }
+
+@media (max-width: 780px) {
+  .guide { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .wa { right: 12px; bottom: 12px; padding: 12px; }
+  .wa span { display: none; }
+  .pick .wa-quote { justify-content: center; }
+  .cert { grid-template-columns: 1fr; }
+  .cert .line__sign { display: none; }
 }
 
 /* ==========================================================================

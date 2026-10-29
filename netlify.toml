@@ -32,3 +32,13 @@
   from = "/enquiry"
   to = "/enquiry.html"
   status = 301
+
+[[redirects]]
+  from = "/certificates"
+  to = "/certificates.html"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 301

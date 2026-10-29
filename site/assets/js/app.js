@@ -48,6 +48,29 @@
   };
   window.OSEnquiry = Enq;
 
+  /* ---------- WhatsApp ----------------------------------------------- */
+  /* Quote requests go to the sales WhatsApp number. wa.me takes the number
+     in international form with no plus, spaces or leading zero. */
+  var WA_NUMBER = '971561821086';
+
+  function waLink(text) {
+    return 'https://wa.me/' + WA_NUMBER + (text ? '?text=' + encodeURIComponent(text) : '');
+  }
+  window.OSWhatsApp = waLink;
+
+  /* Prefilled messages carry the model and the marking, so the reply can
+     quote against the standard without a round of questions. */
+  function quoteText(p, size, qty) {
+    return 'Quote request: ' + p.brand + ' ' + p.name + ' (model ' + p.model + ')' +
+      '\nStandards: ' + p.standards.join(', ') +
+      (size ? '\nSize: ' + size.label + (size.code ? ' (' + size.code + ')' : '') : '') +
+      '\nQuantity: ' + (qty || 1);
+  }
+  function docText(p) {
+    return 'Please send the datasheet and certificates for ' + p.brand + ' ' + p.name +
+      ' (model ' + p.model + ').';
+  }
+
   /* ---------- helpers ------------------------------------------------ */
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -175,6 +198,17 @@
         .replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
+    /* Documents row. A product with `datasheet` set links the PDF; without
+       one the buyer can ask for it on WhatsApp, so every line still offers
+       its paperwork. */
+    function docs(p) {
+      var ds = p.datasheet
+        ? '<a class="doc" href="' + attr(p.datasheet) + '" download>Datasheet (PDF)</a>'
+        : '<a class="doc" href="' + waLink(docText(p)) + '" target="_blank" rel="noopener">Request datasheet and certificates</a>';
+      return '<div class="docs">' + ds +
+        '<a class="doc doc--quiet" href="certificates.html#' + p.id + '">Certification details</a></div>';
+    }
+
     function sheet(p) {
       var c = category(p.cat);
       var picker = '';
@@ -211,9 +245,11 @@
           '<dl class="specs">' + p.specs.map(function (s) {
             return '<div><dt>' + s[0] + '</dt><dd>' + s[1] + '</dd></div>';
           }).join('') + '</dl>' +
+          docs(p) +
           '<div class="pick">' + picker +
             '<div class="pick__field"><span class="pick__label">Quantity</span>' + stepper(1) + '</div>' +
             '<button class="add" type="button">Add to enquiry</button>' +
+            '<a class="wa-quote" href="' + waLink(quoteText(p)) + '" target="_blank" rel="noopener">Quote on WhatsApp</a>' +
           '</div>' +
         '</div>' +
       '</article>';
@@ -224,7 +260,15 @@
     $$('.sheet', host).forEach(function (el) {
       var pid = el.dataset.id;
       var qty = 1;
-      wireStepper($('.stepper', el), function (v) { qty = v; });
+      var wa = $('.wa-quote', el);
+      var sizeSel = $('.js-size', el);
+      function syncWa() {
+        var s = sizeSel ? sizeOf(product(pid), sizeSel.value) : null;
+        wa.href = waLink(quoteText(product(pid), s, qty));
+      }
+      if (sizeSel) { sizeSel.addEventListener('change', syncWa); }
+      wireStepper($('.stepper', el), function (v) { qty = v; syncWa(); });
+      syncWa();
       var btn = $('.add', el);
       btn.addEventListener('click', function () {
         var sel = $('.js-size', el);
@@ -373,12 +417,15 @@
               '</p>' +
               '<div class="actions">' +
                 '<a class="btn btn--primary" id="mailto" href="#">Email a copy</a>' +
+                '<a class="btn btn--quiet" id="wasend" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>' +
                 '<button class="btn btn--quiet" type="button" id="copy">Copy list</button>' +
               '</div>' +
             '</div>';
 
           $('#mailto').href = 'mailto:sales@oasisstar.ae?subject=' +
             encodeURIComponent('Enquiry ' + ref) + '&body=' + encodeURIComponent(text);
+
+          $('#wasend').href = waLink(text);
 
           $('#copy').addEventListener('click', function () {
             navigator.clipboard.writeText(text).then(function () { toast('List copied'); });
@@ -395,6 +442,44 @@
     }
 
     render();
+  }
+
+  /* ---------- certificates page ------------------------------------------ */
+  /* One row per documented line, built from the same data as the catalogue
+     so the register can never drift from the datasheets. */
+  function initCertificates() {
+    var host = $('#register');
+    if (!host) { return; }
+    host.innerHTML = window.OS_PRODUCTS.map(function (p) {
+      var c = category(p.cat);
+      var certs = (p.certs || []).map(function (x) {
+        return '<li>' + x.standard + (x.body ? ' &middot; ' + x.body : '') +
+          (x.ref ? ' &middot; <span class="mono">' + x.ref + '</span>' : '') + '</li>';
+      }).join('');
+      return '<article class="cert" id="' + p.id + '">' +
+        '<span class="line__sign"><svg><use href="#' + c.icon + '"></use></svg></span>' +
+        '<div class="cert__body">' +
+          '<span class="sheet__eyebrow">' + c.label + ' &middot; Model ' + p.model + '</span>' +
+          '<h3 class="cert__name">' + p.brand + ' &mdash; ' + p.name + '</h3>' +
+          '<span class="marking">' + p.standards.join(' &nbsp;/&nbsp; ') + '</span>' +
+          (certs
+            ? '<ul class="cert__list">' + certs + '</ul>'
+            : '<p class="cert__note">Certificates of conformity are supplied with the quotation, or on request.</p>') +
+          '<div class="docs">' +
+            (p.datasheet
+              ? '<a class="doc" href="' + p.datasheet + '" download>Datasheet (PDF)</a>'
+              : '<a class="doc" href="' + waLink(docText(p)) + '" target="_blank" rel="noopener">Request datasheet and certificates</a>') +
+            '<a class="doc doc--quiet" href="products.html?cat=' + p.cat + '">View in catalogue</a>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    }).join('');
+
+    /* Deep links (certificates.html#rn-267) arrive before the rows exist. */
+    if (window.location.hash) {
+      var target = document.getElementById(window.location.hash.slice(1));
+      if (target) { target.scrollIntoView(); target.setAttribute('data-target', 'true'); }
+    }
   }
 
   /* ---------- contact page ---------------------------------------------- */
@@ -483,6 +568,7 @@
     initProducts();
     initEnquiry();
     initContact();
+    initCertificates();
     initReveal();   /* last — product sheets must exist before observing */
   });
 })();
