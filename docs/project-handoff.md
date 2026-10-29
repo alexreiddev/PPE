@@ -202,6 +202,7 @@ Categories live in `window.OS_CATEGORIES`. Each entry has an `id`, an `icon` (pi
 - "Activate the email you purchased" — incomplete
 - Unverified Email Senders notice — 6 emails from outlook.com, unreviewed
 - Billing validation prompt on Email Plus plan
+- **Outgoing mail lands in spam** — domain has a `p=quarantine` DMARC record but no SPF and DKIM was never enabled, so every message fails DMARC. Fix: [`email-authentication.md`](email-authentication.md) (add SPF TXT, add two DKIM CNAMEs from the Defender portal, enable DKIM).
 
 ---
 
@@ -212,7 +213,7 @@ To point `oasisstargt.com` at the Netlify site:
 **In GoDaddy → DNS Management:**
 1. Edit the existing `A` record for `@` — change from GoDaddy WebsiteBuilder IP to Netlify load balancer: `75.2.60.5`
 2. Edit the `CNAME` record for `www` — change from self-pointing to `oasis-star.netlify.app`
-3. **Leave alone:** MX records (Microsoft 365 email), DMARC TXT, `_domainconnect` CNAME, SOA, NS records
+3. **Leave alone:** MX records (Microsoft 365 email), SPF TXT, DMARC TXT, DKIM `selector1`/`selector2._domainkey` CNAMEs, `autodiscover` CNAME, `_domainconnect` CNAME, SOA, NS records — see [`email-authentication.md`](email-authentication.md)
 
 **In Netlify → Domain management:**
 1. Add custom domain `oasisstargt.com`
