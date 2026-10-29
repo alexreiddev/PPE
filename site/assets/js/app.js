@@ -422,7 +422,7 @@
               '</div>' +
             '</div>';
 
-          $('#mailto').href = 'mailto:sales@oasisstar.ae?subject=' +
+          $('#mailto').href = 'mailto:info@oasisstargt.com?subject=' +
             encodeURIComponent('Enquiry ' + ref) + '&body=' + encodeURIComponent(text);
 
           $('#wasend').href = waLink(text);
@@ -502,7 +502,7 @@
           '<h2>' + (delivered ? 'Thank you' : 'Try email instead') + '</h2>' +
           '<p>' + (delivered
             ? 'One of our team replies within one working day. For anything urgent, call the number opposite.'
-            : 'We could not reach the server. Email sales@oasisstar.ae and we will pick it up from there.') +
+            : 'We could not reach the server. Email info@oasisstargt.com and we will pick it up from there.') +
           '</p></div>';
       }
 

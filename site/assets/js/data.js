@@ -1,5 +1,7 @@
 /* Oasis Star General Trading — catalogue data.
-   Sourced from the client's 2025 product catalogue. Four documented lines
+   Sourced from the client's 2025 product catalogue, plus the 6338 (Red Wing
+   Dubai product sheet) and R-138 (Ringers product sheet) supplied by the
+   client in Oct 2026. Photos are cut from those sheets. Originally four lines
    plus the categories listed in their profile that have no product detail yet.
    The 267 ratings come from the Ringers Impact Protection catalogue (2019),
    which corrects the client catalogue: its "level 2" is ISEA 138 impact, not
@@ -53,6 +55,12 @@ function euRange(a, b) {
   return out;
 }
 
+function usRun(width, a, b) {
+  var out = [];
+  for (var i = a; i <= b; i++) { out.push({ value: width + i, label: 'US ' + i + ' ' + width }); }
+  return out;
+}
+
 window.OS_PRODUCTS = [
   {
     id: 'rw-3228', brand: 'Red Wing', model: '3228', cat: 'foot',
@@ -67,7 +75,8 @@ window.OS_PRODUCTS = [
       ['Protection', 'ForceGuard chemical and abrasion resistance'],
       ['Electrical', 'EH rated'],
       ['Height', '6 inch'],
-      ['Origin', 'Made in Italy']
+      ['Origin', 'Made in Italy'],
+      ['Best for', 'Oil and gas, refinery and heavy-industry crews facing electrical, puncture and chemical hazards underfoot']
     ],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
@@ -86,10 +95,32 @@ window.OS_PRODUCTS = [
       ['Protection', 'ForceGuard against abrasion, chemicals, oil and gas'],
       ['Electrical', 'EH rated'],
       ['Height', '8 inch'],
-      ['Origin', 'Made in Italy']
+      ['Origin', 'Made in Italy'],
+      ['Best for', 'The same hazards as the 3228 where the work needs ankle support: rough ground, scaffolds, rig floors']
     ],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'NT', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
+  },
+
+  {
+    id: 'rw-6338', brand: 'Red Wing', model: '6338', cat: 'foot',
+    name: 'Athletic safety shoe',
+    origin: 'Made in Vietnam',
+    photo: 'assets/img/rw-6338.jpg',
+    photoAlt: 'Red Wing 6338 athletic safety shoe, black nylon upper with orange rubber-EVA outsole, side view',
+    lede: 'A light, breathable safety trainer for crews who are on their feet and moving all shift. Nylon upper with mesh lining, aluminium safety toe and electrical hazard protection, on a rubber-EVA outsole rated best for oil, chemical, abrasion and heat resistance.',
+    specs: [
+      ['Upper', 'Breathable nylon with mesh lining'],
+      ['Safety toe', 'Aluminium'],
+      ['Outsole', 'Rubber-EVA Stealth, non-marking'],
+      ['Resistance', 'Oil and gas, chemical, abrasion and heat: rated best'],
+      ['Electrical', 'EH rated'],
+      ['Construction', 'Cement; non-woven insole, nylon shank, last 305'],
+      ['Origin', 'Made in Vietnam'],
+      ['Best for', 'Logistics, shipyard, maintenance and plant crews who find full boots too heavy and hot']
+    ],
+    standards: ['ASTM F2413-24', 'I/C', 'EH', 'SR'],
+    sizes: { label: 'Size and width', options: usRun('D', 7, 15).concat(usRun('E', 7, 15), usRun('H', 8, 13)) }
   },
 
   {
@@ -107,7 +138,8 @@ window.OS_PRODUCTS = [
       ['Stitching', 'Kevlar stitched palm'],
       ['Visibility', 'High-visibility design'],
       ['Packaging', '5 pairs per bag, 50 pairs per carton'],
-      ['Industries', 'Engineering, manufacturing, oil and gas, utilities']
+      ['Industries', 'Engineering, manufacturing, oil and gas, utilities'],
+      ['Best for', 'Rig floors, rigging and pipe handling, where impact and pinch points cause most hand injuries']
     ],
     standards: ['EN 388 4243BP', 'ANSI/ISEA 138 L2', 'EN 420'],
     sizes: {
@@ -123,6 +155,27 @@ window.OS_PRODUCTS = [
         { value: '4XL', label: '4XL', code: '267-14' }
       ]
     }
+  },
+
+  {
+    id: 'rn-138', brand: 'Ringers', model: 'R-138', cat: 'hand',
+    name: 'Hi-vis touchscreen work glove',
+    origin: 'EN ISO 21420 Cat. II',
+    photo: 'assets/img/rn-138.jpg',
+    photoAlt: 'Ringers R-138 glove, fluorescent yellow mesh back with black synthetic leather palm and reflective trim',
+    lede: 'A light, high-visibility glove for workshop, vehicle and light handling work, where dexterity matters more than impact protection. Synthetic split-leather palm for grip and wear, touchscreen fingertips so phones and tablets work without taking it off.',
+    specs: [
+      ['Back of hand', 'Soft, lightweight high-visibility mesh with reflective markings'],
+      ['Palm', 'Synthetic split leather for grip and durability'],
+      ['Index finger', 'Wear and tear resistant wraparound'],
+      ['Closure', 'Hook and loop with TPR pull tab'],
+      ['Touchscreen', 'Thumb, index and middle fingertips'],
+      ['EN 388', '2121X'],
+      ['ANSI/ISEA 105', 'Abrasion 3, cut A1, puncture 2'],
+      ['Best for', 'Automotive workshops, fleet maintenance, logistics and light assembly']
+    ],
+    standards: ['EN 388 2121X', 'EN ISO 21420', 'CE Cat. II'],
+    sizes: null
   },
 
   {
@@ -143,7 +196,8 @@ window.OS_PRODUCTS = [
       ['Worker safety', 'Programmable PTT, alarm and multifunction buttons, lone worker protection'],
       ['Sensors', 'Biometric, accelerometer, gyrometer, magnetometer, barometer, proximity, ambient light'],
       ['Audio', '3.5 mm interface for legacy and current PTT accessories'],
-      ['Approvals', 'PTCRB, GCF, Google ARCore ready']
+      ['Approvals', 'PTCRB, GCF, Google ARCore ready'],
+      ['Best for', 'Crews in Zone 1/21 areas who cannot carry an ordinary phone, and lone workers who need an alarm button']
     ],
     standards: ['ATEX Zone 1/21', 'Div 1', 'PTCRB', 'GCF'],
     sizes: null
