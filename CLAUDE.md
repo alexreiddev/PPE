@@ -46,22 +46,31 @@ The taste skills carry strong opinions and an "anti-default discipline" that wil
 toward re-skinning. On this project that is **out of scope without a re-quote**. Hold
 these fixed unless the client explicitly asks otherwise:
 
-**Design tokens are locked** (defined at the top of `site/assets/css/site.css`):
+**Design tokens are locked** (defined at the top of `site/assets/css/site.css`, then
+redefined by the **night theme** block near the end of that file — the night values win).
+The site was re-skinned to the night theme on 29 Oct 2026 on the developer's instruction,
+from a supplied "Kit the whole worker" mockup. Don't revert to the earlier sand/teal/amber
+palette, and don't re-skin again without the client asking:
 
 | Token | Value | Role |
 | --- | --- | --- |
-| `--ink` | `#111A1C` | near-black slate |
-| `--mandate` | `#0C6E62` | oasis teal — pictograms, links |
-| `--signal` | `#E0A22B` | safety amber — primary actions |
-| `--concrete` | `#E9E4D9` | desert sand surface |
+| `--ink` | `#050D1A` | deepest navy — masthead, footer, dark bands |
+| `--paper` | `#07111F` | page background |
+| `--steel` | `#0C1A2E` | raised panels |
+| `--mandate` | `#2F8BFF` | electric blue — pictograms, links, focus |
+| `--signal` | `#1F7BFF` | primary actions |
+| `--ok` / `--review` | `#22C55E` / `#F5A524` | zone status: documented line / sourced to order |
 | `--alert` | `#C0392B` | validation errors only |
 
-Type: **Archivo** 600/800 display, **IBM Plex Sans** body, **IBM Plex Mono** for
+Type: **Archivo** 600/800 display (headings use its condensed width axis, `font-stretch: 72%`), **IBM Plex Sans** body, **IBM Plex Mono** for
 markings, data, labels, buttons.
 
 **Signature elements — do not remove or "modernise" away:**
-1. **Gate board** — pictogram disc row on the home page; mimics mandatory-action
-   signage at a site entrance.
+1. **Suit-up worker** — the home hero's worker figure with six protection-zone cards
+   (head, eyes, body, hands, feet, Ex devices), driven by the kit finder. It replaced the
+   pictogram gate board and keeps its pictograms. A zone shows **OK** only for a
+   documented line in `data.js`; everything else is **To order** with the standard a buyer
+   would specify. Never show an invented product, rating, stock level or price there.
 2. **Marking strip** — hatched mono strip carrying each product's EN/ANSI/ATEX
    standards. Procurement buys by the standard, so the standard stays the loudest
    thing on the card.

@@ -53,6 +53,26 @@ window.SG_ICONS = `
   <symbol id="pic-fire" viewBox="0 0 24 24">
     <path d="M9.8 1.6h3.6c.5 0 .9.4.9.9v1.2h2.4c.6 0 1 .4 1 1s-.4 1-1 1h-1.4l1.5 2v1.6h-1.9V21c0 .6-.4 1-1 1H8.3c-.6 0-1-.4-1-1V9.6c0-2 1.1-3.8 2.8-4.7V2.5c0-.5.3-.9.7-.9z"/>
   </symbol>
+
+  <!-- Line icons for the kit finder's industry tiles (stroked, not filled). -->
+  <symbol id="ic-construction" viewBox="0 0 24 24">
+    <path d="M4 16a8 8 0 0 1 16 0"/><path d="M10 8.3V5.5h4v2.8"/><path d="M2.5 16h19v2.5h-19z"/>
+  </symbol>
+  <symbol id="ic-oilgas" viewBox="0 0 24 24">
+    <path d="M12 2.5 6.5 21.5M12 2.5l5.5 19M8.2 15.5h7.6M9.6 10.5h4.8M4 21.5h16"/>
+  </symbol>
+  <symbol id="ic-manufacturing" viewBox="0 0 24 24">
+    <path d="M2.5 21.5V10l5 3V10l5 3V10l5 3V4.5h4v17z"/><path d="M6 17.5h2M11 17.5h2M16 17.5h2"/>
+  </symbol>
+  <symbol id="ic-logistics" viewBox="0 0 24 24">
+    <path d="M2 6.5h11.5v10H2zM13.5 10h4.2l3.3 3.4v3.1h-7.5"/><circle cx="6" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>
+  </symbol>
+  <symbol id="ic-utilities" viewBox="0 0 24 24">
+    <path d="M13.5 2.5 5 13.5h6l-1.5 8 8.5-11h-6z"/>
+  </symbol>
+  <symbol id="ic-crew" viewBox="0 0 24 24">
+    <circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><circle cx="17" cy="8.8" r="2.5"/><path d="M16.5 14.2c2.7.3 4.5 2.4 4.5 5.3"/>
+  </symbol>
 </svg>`;
 
 document.addEventListener('DOMContentLoaded', function () {

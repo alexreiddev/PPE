@@ -451,106 +451,187 @@
     render();
   }
 
-  /* ---------- compliance finder ------------------------------------------- */
-  /* Pick hazards (and optionally an industry); the finder returns the lines
-     whose datasheets cover them, with the proof for each. Hazards no line
-     covers are listed too, with a WhatsApp request, rather than hidden. */
-  function initFinder() {
-    var host = $('#finder');
-    if (!host) { return; }
-    var picked = {};
-    var industry = '';
+  /* ---------- suit-up hero + kit finder ---------------------------------- */
+  /* One state drives both: the finder picks a line per protection zone from
+     data.js (scored on the hazards its datasheet covers, then industry), the
+     worker's zone cards show the pick, and the kit list multiplies by crew.
+     Zones with no documented line are listed as sourced to order with the
+     standard a buyer would specify — never as a stocked product. */
+  function initKit() {
+    var panel = $('#kit');
+    if (!panel) { return; }
+    var state = { industry: '', hazards: {}, crew: 25 };
+    var ZONES = [
+      { id: 'head',  label: 'Head',  icon: 'pic-head' },
+      { id: 'eyes',  label: 'Eyes',  icon: 'pic-eye' },
+      { id: 'body',  label: 'Body',  icon: 'pic-body' },
+      { id: 'hands', label: 'Hands', icon: 'pic-hand', cat: 'hand' },
+      { id: 'feet',  label: 'Feet',  icon: 'pic-foot', cat: 'foot' },
+      { id: 'dev',   label: 'Ex devices', icon: 'pic-gas', cat: 'exdev' }
+    ];
+    var last = {};
 
-    function chip(kind, id, label) {
-      return '<button type="button" class="chip fchip" data-kind="' + kind + '" data-id="' + id +
-        '" aria-pressed="false">' + label + '</button>';
+    function has(h) { return !!state.hazards[h]; }
+    function hzLabel(id) { return window.OS_HAZARDS.filter(function (h) { return h.id === id; })[0].label; }
+    function indLabel(id) { var x = window.OS_INDUSTRIES.filter(function (i) { return i.id === id; })[0]; return x ? x.label : 'Any'; }
+
+    function best(cat) {
+      var picked = Object.keys(state.hazards);
+      var scored = window.OS_PRODUCTS.filter(function (p) { return p.cat === cat; }).map(function (p, n) {
+        var hits = picked.filter(function (h) { return p.covers && p.covers[h]; });
+        var score = hits.length * 2;
+        if (state.industry) { score += (p.industries || []).indexOf(state.industry) >= 0 ? 1 : -1; }
+        return { p: p, hits: hits, score: score, n: n };
+      });
+      scored.sort(function (a, b) { return b.score - a.score || a.n - b.n; });
+      return scored[0];
     }
 
-    var areas = [];
-    window.OS_HAZARDS.forEach(function (h) { if (areas.indexOf(h.area) < 0) { areas.push(h.area); } });
+    function recommend() {
+      var fr = has('chemical') || has('explosive');
+      var out = {
+        head: { item: 'Hard hat', std: 'EN 397', note: 'Sourced to order', state: 'request' },
+        eyes: { item: 'Safety glasses', std: 'EN 166', note: 'Sourced to order', state: 'request' },
+        body: fr
+          ? { item: 'FR anti-static coverall', std: 'EN ISO 11612 / EN 1149-5', note: 'Sourced to order', state: 'request' }
+          : { item: 'Hi-vis vest', std: 'EN ISO 20471', note: 'Sourced to order', state: 'request' }
+      };
+      ['hands', 'feet', 'dev'].forEach(function (z) {
+        var zone = ZONES.filter(function (x) { return x.id === z; })[0];
+        var b = best(zone.cat);
+        if (z === 'dev' && !(has('explosive') || has('lone'))) {
+          out.dev = { item: 'Ex smartphone', std: 'ATEX Zone 1/21', note: 'Add explosive atmosphere or lone working if your permit needs it', state: 'idle', p: b.p, off: true };
+          return;
+        }
+        out[z] = {
+          p: b.p, item: b.p.name, std: b.p.standards.slice(0, 2).join(' · '),
+          note: b.hits.length ? b.p.covers[b.hits[0]] : b.p.brand + ' ' + b.p.model,
+          state: 'ok'
+        };
+      });
+      return out;
+    }
 
-    $('#finder-hazards', host).innerHTML = areas.map(function (a) {
-      return '<div class="finder__group"><span class="pick__label">' + a + '</span><div class="finder__chips">' +
-        window.OS_HAZARDS.filter(function (h) { return h.area === a; })
-          .map(function (h) { return chip('hazard', h.id, h.label); }).join('') +
-        '</div></div>';
-    }).join('');
-    $('#finder-industries', host).innerHTML = chip('industry', '', 'Any industry') +
-      window.OS_INDUSTRIES.map(function (i) { return chip('industry', i.id, i.label); }).join('');
+    function render(lightAll) {
+      var rec = recommend();
 
-    function hazard(id) { return window.OS_HAZARDS.filter(function (h) { return h.id === id; })[0]; }
-
-    function render() {
-      $$('.fchip', host).forEach(function (b) {
-        var on = b.dataset.kind === 'hazard' ? !!picked[b.dataset.id] : b.dataset.id === industry;
-        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      /* worker zone cards */
+      ZONES.forEach(function (z) {
+        var el = $('[data-zone="' + z.id + '"]');
+        if (!el) { return; }
+        var r = rec[z.id];
+        var st = $('.zone__state', el);
+        st.dataset.state = r.state;
+        st.textContent = r.state === 'ok' ? 'OK' : r.state === 'request' ? 'To order' : 'Optional';
+        $('.zone__item', el).textContent = r.item;
+        $('.zone__std', el).textContent = r.std;
+        $('.zone__note', el).textContent = r.note;
+        var sig = r.item + r.state;
+        if (lightAll || (last[z.id] && last[z.id] !== sig)) {
+          el.dataset.lit = 'true';
+          setTimeout(function () { el.dataset.lit = 'false'; }, 1400);
+        }
+        last[z.id] = sig;
       });
 
-      var ids = Object.keys(picked);
-      var out = $('#finder-results', host);
-      if (!ids.length) {
-        out.innerHTML = '<p class="cert__note">Pick one or more hazards from your risk assessment to see the lines that cover them.</p>';
-        return;
+      /* kit list */
+      var lines = ZONES.map(function (z) { return { z: z, r: rec[z.id] }; }).filter(function (x) { return !x.r.off; });
+      $('[data-kit-list]').innerHTML = lines.map(function (x) {
+        var p = x.r.p, thumb = p && p.photo
+          ? '<img src="' + p.photo + '" alt="">'
+          : '<svg><use href="#' + x.z.icon + '"></use></svg>';
+        return '<li><span class="kitlist__thumb">' + thumb + '</span>' +
+          '<div><p class="kitlist__name">' + x.r.item + '</p>' +
+          '<p class="kitlist__std" data-state="' + x.r.state + '">' + x.r.std + (x.r.state === 'request' ? ' · to order' : '') + '</p></div>' +
+          '<span class="kitlist__qty">' + state.crew + ' pcs</span></li>';
+      }).join('');
+
+      /* site profile + ring */
+      var stock = lines.filter(function (x) { return x.r.state === 'ok'; });
+      var order = lines.filter(function (x) { return x.r.state === 'request'; });
+      var prof = { industry: indLabel(state.industry), hazards: Object.keys(state.hazards).length,
+        crew: state.crew, stock: stock.length, order: order.length };
+      Object.keys(prof).forEach(function (k) { var el = $('[data-prof="' + k + '"]'); if (el) { el.textContent = prof[k]; } });
+      var ring = $('[data-ring]');
+      if (ring) {
+        ring.textContent = stock.length + ' / ' + lines.length;
+        $('.ring__fg').setAttribute('stroke-dashoffset', String(207.3 * (1 - stock.length / lines.length)));
       }
 
-      var matches = window.OS_PRODUCTS.map(function (p) {
-        var hits = ids.filter(function (h) { return p.covers && p.covers[h]; });
-        return { p: p, hits: hits };
-      }).filter(function (m) {
-        return m.hits.length && (!industry || (m.p.industries || []).indexOf(industry) >= 0);
-      }).sort(function (a, b) { return b.hits.length - a.hits.length; });
+      /* chips and tiles */
+      $$('[data-kit-industries] .tile').forEach(function (t) {
+        t.setAttribute('aria-pressed', t.dataset.id === state.industry ? 'true' : 'false');
+      });
+      $$('[data-kit-hazards] button').forEach(function (b) {
+        b.setAttribute('aria-pressed', has(b.dataset.id) ? 'true' : 'false');
+      });
 
-      var covered = {};
-      matches.forEach(function (m) { m.hits.forEach(function (h) { covered[h] = true; }); });
-      var gaps = ids.filter(function (h) { return !covered[h]; });
-
-      var kit = 'Compliance finder request' +
-        '\nHazards: ' + ids.map(function (h) { return hazard(h).label; }).join(', ') +
-        (industry ? '\nIndustry: ' + window.OS_INDUSTRIES.filter(function (i) { return i.id === industry; })[0].label : '') +
-        (matches.length ? '\nSuggested: ' + matches.map(function (m) { return m.p.brand + ' ' + m.p.model; }).join(', ') : '');
-
-      out.innerHTML =
-        (matches.length ? matches.map(function (m) {
-          var p = m.p, c = category(p.cat);
-          return '<article class="cert">' +
-            '<span class="line__sign"><svg><use href="#' + c.icon + '"></use></svg></span>' +
-            '<div class="cert__body">' +
-              '<span class="sheet__eyebrow">' + c.label + ' &middot; Model ' + p.model +
-                ' &middot; covers ' + m.hits.length + ' of ' + ids.length + '</span>' +
-              '<h3 class="cert__name">' + p.brand + ' &mdash; ' + p.name + '</h3>' +
-              '<span class="marking">' + p.standards.join(' &nbsp;/&nbsp; ') + '</span>' +
-              '<ul class="cert__list">' + m.hits.map(function (h) {
-                return '<li><strong>' + hazard(h).label + ':</strong> ' + p.covers[h] + '</li>';
-              }).join('') + '</ul>' +
-              '<div class="docs">' +
-                '<a class="doc" href="products.html?cat=' + p.cat + '#' + p.id + '">Datasheet and sizes</a>' +
-                '<a class="doc doc--quiet" href="certificates.html#' + p.id + '">Certification details</a>' +
-              '</div>' +
-            '</div></article>';
-        }).join('') : '') +
-        (gaps.length
-          ? '<p class="cert__note finder__gap">No documented line covers <strong>' +
-              gaps.map(function (h) { return hazard(h).label.toLowerCase(); }).join(', ') +
-              (industry ? '</strong> for this industry' : '</strong>') +
-              ' yet. We source to your specification &mdash; send the standard you need to meet.</p>'
-          : '') +
-        '<div class="actions" style="margin-top:20px">' +
-          '<a class="btn btn--primary" href="' + waLink(kit) + '" target="_blank" rel="noopener">Quote this kit on WhatsApp</a>' +
-          '<a class="btn btn--quiet" href="products.html">Build the list in the catalogue</a>' +
-        '</div>';
+      /* WhatsApp quote for the whole kit, sourced-to-order lines included */
+      $('[data-kit-wa]').href = waLink('Kit request (' + state.crew + ' workers)' +
+        '\nIndustry: ' + indLabel(state.industry) +
+        (prof.hazards ? '\nHazards: ' + Object.keys(state.hazards).map(hzLabel).join(', ') : '') + '\n' +
+        lines.map(function (x) {
+          return '- ' + state.crew + ' x ' + (x.r.p ? x.r.p.brand + ' ' + x.r.p.model + ' ' + x.r.item : x.r.item) +
+            ' (' + x.r.std + ')' + (x.r.state === 'request' ? ' — to order' : '');
+        }).join('\n'));
+      return stock;
     }
 
-    host.addEventListener('click', function (e) {
-      var b = e.target.closest('.fchip');
-      if (!b) { return; }
-      if (b.dataset.kind === 'hazard') {
-        if (picked[b.dataset.id]) { delete picked[b.dataset.id]; } else { picked[b.dataset.id] = true; }
-      } else {
-        industry = b.dataset.id;
-      }
+    $('[data-kit-industries]').innerHTML = window.OS_INDUSTRIES.map(function (i) {
+      return '<button type="button" class="tile" data-id="' + i.id + '" aria-pressed="false">' +
+        '<svg aria-hidden="true"><use href="#' + i.icon + '"></use></svg>' + i.label + '</button>';
+    }).join('');
+    $('[data-kit-hazards]').innerHTML = window.OS_HAZARDS.map(function (h) {
+      return '<button type="button" data-id="' + h.id + '" aria-pressed="false">' + h.label + '</button>';
+    }).join('');
+
+    panel.addEventListener('click', function (e) {
+      var t = e.target.closest('.tile');
+      var h = e.target.closest('[data-kit-hazards] button');
+      if (t) { state.industry = state.industry === t.dataset.id ? '' : t.dataset.id; render(); }
+      if (h) { if (has(h.dataset.id)) { delete state.hazards[h.dataset.id]; } else { state.hazards[h.dataset.id] = true; } render(); }
+    });
+    var crew = $('[data-kit-crew]');
+    crew.addEventListener('input', function () {
+      state.crew = Math.max(1, Math.min(5000, parseInt(crew.value, 10) || 1));
       render();
     });
+    $('[data-kit-go]').addEventListener('click', function () {
+      render(true);
+      var stage = $('.stage');
+      if (stage) { stage.scrollIntoView({ block: 'center' }); }
+    });
+    $('[data-kit-reset]').addEventListener('click', function () {
+      state = { industry: '', hazards: {}, crew: 25 };
+      crew.value = 25;
+      render(true);
+    });
+    $('[data-kit-add]').addEventListener('click', function () {
+      var stock = render();
+      stock.forEach(function (x) { Enq.add(x.r.p.id, null, state.crew); });
+      toast(stock.length + ' line' + (stock.length === 1 ? '' : 's') + ' × ' + state.crew +
+        ' added. Items to order go in the WhatsApp quote.');
+    });
+    $('[data-kit-pdf]').addEventListener('click', function () {
+      document.body.classList.add('print-kit');
+      window.print();
+    });
+    window.addEventListener('afterprint', function () { document.body.classList.remove('print-kit'); });
+
     render();
+  }
+
+  /* Gulf Standard Time on the hero ticker — a real clock, not a feed. */
+  function initClock() {
+    var el = $('[data-gst]');
+    if (!el) { return; }
+    function tick() {
+      try {
+        el.textContent = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Dubai', hour12: false });
+      } catch (e) { el.textContent = ''; }
+    }
+    tick();
+    setInterval(tick, 1000);
   }
 
   /* ---------- certificates page ------------------------------------------ */
@@ -678,7 +759,8 @@
     initEnquiry();
     initContact();
     initCertificates();
-    initFinder();
+    initKit();
+    initClock();
     initReveal();   /* last — product sheets must exist before observing */
   });
 })();

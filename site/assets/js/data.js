@@ -63,15 +63,16 @@ window.OS_HAZARDS = [
   { id: 'slip',       label: 'Slippery floors',          area: 'Feet' },
   { id: 'chemical',   label: 'Oil, fuel and chemicals',  area: 'Feet' },
   { id: 'explosive',  label: 'Explosive atmosphere',     area: 'Devices' },
-  { id: 'lone',       label: 'Lone working',             area: 'Devices' }
+  { id: 'lone',       label: 'Lone working',             area: 'Devices' },
+  { id: 'heat',       label: 'Heat stress',              area: 'Feet' }
 ];
 
 window.OS_INDUSTRIES = [
-  { id: 'oilgas',       label: 'Oil and gas' },
-  { id: 'construction', label: 'Construction' },
-  { id: 'refinery',     label: 'Refinery and chemical' },
-  { id: 'shipyard',     label: 'Shipyard and marine' },
-  { id: 'workshop',     label: 'Workshop and logistics' }
+  { id: 'construction',  label: 'Construction',  icon: 'ic-construction' },
+  { id: 'oilgas',        label: 'Oil & Gas',     icon: 'ic-oilgas' },
+  { id: 'manufacturing', label: 'Manufacturing', icon: 'ic-manufacturing' },
+  { id: 'logistics',     label: 'Logistics',     icon: 'ic-logistics' },
+  { id: 'utilities',     label: 'Utilities',     icon: 'ic-utilities' }
 ];
 
 function euRange(a, b) {
@@ -110,7 +111,7 @@ window.OS_PRODUCTS = [
       slip: 'SR, TredMax slip-resistant outsole',
       chemical: 'ForceGuard chemical, oil and gas resistance'
     },
-    industries: ['oilgas', 'construction', 'refinery'],
+    industries: ['oilgas', 'construction', 'utilities'],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
   },
@@ -138,7 +139,7 @@ window.OS_PRODUCTS = [
       slip: 'SR, TredMax slip-resistant outsole',
       chemical: 'ForceGuard chemical, oil and gas resistance'
     },
-    industries: ['oilgas', 'construction', 'refinery'],
+    industries: ['oilgas', 'construction', 'utilities'],
     standards: ['EN ISO 20345', 'ASTM F2413', 'EH', 'PR', 'NT', 'SR'],
     sizes: { label: 'Size', options: euRange(35, 48) }
   },
@@ -164,9 +165,10 @@ window.OS_PRODUCTS = [
       toe: 'Aluminium safety toe, ASTM F2413-24 I/C',
       electrical: 'EH rated',
       slip: 'SR rated',
-      chemical: 'Outsole rated best for oil, gas and chemical resistance'
+      chemical: 'Outsole rated best for oil, gas and chemical resistance',
+      heat: 'Breathable nylon upper with mesh lining; outsole rated best for heat resistance'
     },
-    industries: ['oilgas', 'construction', 'refinery', 'shipyard'],
+    industries: ['oilgas', 'construction', 'manufacturing'],
     standards: ['ASTM F2413-24', 'I/C', 'EH', 'SR'],
     sizes: { label: 'Size and width', options: usRun('D', 7, 15).concat(usRun('E', 7, 15), usRun('H', 8, 13)) }
   },
@@ -194,7 +196,7 @@ window.OS_PRODUCTS = [
       cut: 'EN 388 4243BP: abrasion 4, cut 2',
       grip: 'TefLoc palm, oil resistant'
     },
-    industries: ['oilgas', 'construction'],
+    industries: ['oilgas', 'manufacturing', 'utilities'],
     standards: ['EN 388 4243BP', 'ANSI/ISEA 138 L2', 'EN 420'],
     sizes: {
       label: 'Size',
@@ -231,7 +233,7 @@ window.OS_PRODUCTS = [
     covers: {
       cut: 'EN 388 2121X; ANSI/ISEA 105 cut A1, abrasion 3'
     },
-    industries: ['workshop'],
+    industries: ['logistics', 'manufacturing'],
     standards: ['EN 388 2121X', 'EN ISO 21420', 'CE Cat. II'],
     sizes: null
   },
@@ -261,7 +263,7 @@ window.OS_PRODUCTS = [
       explosive: 'Certified for Zone 1/21 and Div 1',
       lone: 'Lone worker protection, programmable alarm and PTT buttons'
     },
-    industries: ['oilgas', 'refinery'],
+    industries: ['oilgas', 'manufacturing', 'utilities'],
     standards: ['ATEX Zone 1/21', 'Div 1', 'PTCRB', 'GCF'],
     sizes: null
   }

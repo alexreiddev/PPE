@@ -20,7 +20,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,600..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
@@ -41,15 +41,15 @@
     </a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="products.html">Products</a>
-      <a href="certificates.html">Certificates</a>
-      <a href="about.html">About</a>
-      <a href="enquiry.html">Enquiry</a>
+      <a href="index.html#suit-up" aria-current="page">Suit up</a>
+      <a href="index.html#kit-finder">Kit finder</a>
+      <a href="products.html">Catalogue</a>
+      <a href="products.html?cat=exdev">Ex-phones</a>
+      <a href="certificates.html#markings">Glove codes</a>
       <a href="contact.html">Contact</a>
     </nav>
     <a class="tally" href="enquiry.html">
-      <span class="tally__txt">Enquiry</span>
+      <span class="tally__txt">Quote list</span>
       <span class="tally__n" data-tally data-empty="true">0</span>
     </a>
   </div>
@@ -57,68 +57,102 @@
 
 <main id="main">
 
-  <section class="dark hero">
+  <!-- Suit-up hero: the worker is the way in. Each zone card shows the line
+       the kit finder picked for it (or what we source to order), and lights
+       up when the selection changes. Filled by initSuit() in app.js. -->
+  <section class="dark suit" id="suit-up">
     <div class="wrap">
-      <div class="hero__grid">
-        <div>
-          <span class="eyebrow">Oasis Star General Trading</span>
-          <h1>Certified safety equipment for UAE construction.</h1>
-          <p class="lede">Head-to-toe personal protective equipment that meets international standards, supplied to sites across the Emirates. Pick your products and sizes, send us the list, and we come back with pricing, stock and lead time.</p>
+      <div class="suit__grid">
+        <div class="suit__copy">
+          <span class="kicker">Professional PPE solutions</span>
+          <h1><span class="nw">Kit the whole</span> <em>worker.</em></h1>
+          <p class="suit__lede">Certified PPE for UAE sites, head to toe. Pick your industry and the hazards on the permit below &mdash; we build the kit, light it up on the worker and put it on your quote list in one tap.</p>
           <div class="actions">
-            <a class="btn btn--primary" href="products.html">View the catalogue</a>
-            <a class="btn btn--ghost" href="#compliance-finder">Find kit by hazard</a>
+            <a class="btn btn--primary" href="#kit-finder">Kit a crew</a>
+            <a class="btn btn--ghost" href="products.html">View the catalogue</a>
+          </div>
+          <div class="ticker" aria-label="Quotation line">
+            <span class="ticker__live">Quotes open</span>
+            <span>GST <span data-gst>--:--:--</span></span>
+            <a href="https://wa.me/971561821086" target="_blank" rel="noopener">WhatsApp +971 56 182 1086</a>
           </div>
         </div>
 
-        <dl class="hero__facts">
-          <div class="hero__fact"><dt>Range</dt><dd>Helmets, gloves, coveralls, safety footwear, reflective vests, eye and face protection</dd></div>
-          <div class="hero__fact"><dt>Standards</dt><dd>EN ISO, ASTM and ANSI/ISEA certified lines, plus ATEX and IECEx equipment</dd></div>
-          <div class="hero__fact"><dt>Brands</dt><dd>Red Wing, ecom instruments, Roughneck</dd></div>
-          <div class="hero__fact"><dt>Supply</dt><dd>Delivery to site or store across the UAE</dd></div>
-        </dl>
-      </div>
+        <div class="stage" aria-label="Protection zones on the worker">
+          <div class="stage__figure"><img src="assets/img/hero-worker.png" alt="Site worker in a white hard hat, safety glasses, hi-vis vest, work gloves and safety boots" width="248" height="600"></div>
+        <div class="zone zone--l zone--head" data-zone="head">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-head"></use></svg></span><span class="zone__title">Head</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        <div class="zone zone--l zone--eyes" data-zone="eyes">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-eye"></use></svg></span><span class="zone__title">Eyes &amp; face</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        <div class="zone zone--l zone--hands" data-zone="hands">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-hand"></use></svg></span><span class="zone__title">Hands</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        <div class="zone zone--r zone--body" data-zone="body">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-body"></use></svg></span><span class="zone__title">Body</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        <div class="zone zone--r zone--dev" data-zone="dev">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-gas"></use></svg></span><span class="zone__title">Ex devices</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        <div class="zone zone--r zone--feet" data-zone="feet">
+          <div class="zone__head"><span class="zone__icon"><svg><use href="#pic-foot"></use></svg></span><span class="zone__title">Feet</span><span class="zone__state" data-state="idle">&ndash;</span></div>
+          <p class="zone__item"></p><p class="zone__std"></p><p class="zone__note"></p>
+        </div>
+        </div>
 
-      <!-- Category board: mandatory-action signage, used as the way in. -->
-      <div class="gate">
-        <div class="gate__head">
-          <h2>Protection, head to toe</h2>
-          <p>Six categories. Three carry documented lines today; the rest are supplied to your specification.</p>
-        </div>
-        <div class="gate__grid">
-          <a class="disc" href="products.html?cat=foot"><span class="disc__sign"><svg><use href="#pic-foot"></use></svg></span><span class="disc__label">Foot protection</span><span class="disc__n">Safety boots and shoes</span></a>
-          <a class="disc" href="products.html?cat=hand"><span class="disc__sign"><svg><use href="#pic-hand"></use></svg></span><span class="disc__label">Hand protection</span><span class="disc__n">Impact and cut gloves</span></a>
-          <a class="disc" href="products.html?cat=exdev"><span class="disc__sign"><svg><use href="#pic-gas"></use></svg></span><span class="disc__label">Hazardous-area devices</span><span class="disc__n">Zone 1/21 devices</span></a>
-          <a class="disc" href="products.html?cat=head"><span class="disc__sign"><svg><use href="#pic-head"></use></svg></span><span class="disc__label">Head protection</span><span class="disc__n">Safety helmets</span></a>
-          <a class="disc" href="products.html?cat=eye"><span class="disc__sign"><svg><use href="#pic-eye"></use></svg></span><span class="disc__label">Eye and face</span><span class="disc__n">Spectacles and shields</span></a>
-          <a class="disc" href="products.html?cat=body"><span class="disc__sign"><svg><use href="#pic-body"></use></svg></span><span class="disc__label">Body protection</span><span class="disc__n">Coveralls and vests</span></a>
-        </div>
+        <aside class="prof" aria-label="Your site profile">
+          <div class="prof__card">
+            <div class="prof__title">Site profile <small>(your selection)</small></div>
+            <dl style="margin:0">
+              <div class="prof__row"><dt>Industry</dt><dd data-prof="industry">Any</dd></div>
+              <div class="prof__row"><dt>Hazards on permit</dt><dd data-prof="hazards">0</dd></div>
+              <div class="prof__row"><dt>Crew size</dt><dd data-prof="crew">25</dd></div>
+              <div class="prof__row"><dt>Lines from stock</dt><dd data-prof="stock">0</dd></div>
+              <div class="prof__row"><dt>Sourced to order</dt><dd data-prof="order">0</dd></div>
+            </dl>
+          </div>
+          <div class="prof__card ring">
+            <svg viewBox="0 0 80 80" aria-hidden="true"><circle class="ring__bg" cx="40" cy="40" r="33"/><circle class="ring__fg" cx="40" cy="40" r="33" stroke-dasharray="207.3" stroke-dashoffset="207.3"/></svg>
+            <div><div class="ring__n" data-ring>0 / 6</div><div class="ring__l">Protection zones covered from documented lines</div></div>
+          </div>
+          <a class="prof__card doc" href="certificates.html" style="text-decoration:none">Every line ships with its datasheet and certificate &rarr;</a>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- Compliance finder: hazards from the risk assessment → the lines whose
-       datasheets cover them. Rendered from data.js by initFinder(). -->
-  <section class="section band" id="compliance-finder">
+  <section class="section dark kit" id="kit-finder">
     <div class="wrap">
-      <span class="eyebrow eyebrow--mandate">Compliance finder</span>
-      <h2 style="max-width:22ch">Tell us the hazard. We show the kit and the standard that covers it.</h2>
-      <p class="lede" style="margin-bottom:30px">Pick the hazards from your risk assessment and, if you like, your industry. Every result shows the proof from the manufacturer&rsquo;s datasheet.</p>
-      <div class="finder panel" id="finder">
-        <div class="finder__step">
-          <span class="step__n">01</span>
-          <h3>Hazards on site</h3>
-          <div id="finder-hazards"></div>
+      <div class="kit__head">
+        <div><span class="eyebrow">Kit finder</span><h2>Kit a crew</h2></div>
+        <p>Pick the industry and the hazards on your permit. We build the kit, light it up on the worker and put it on your quote list in one tap.</p>
+        <button class="btn btn--quiet kit__reset" type="button" data-kit-reset>Reset filters</button>
+      </div>
+      <div class="kit__panel" id="kit">
+        <div class="kit__col"><p class="kit__label">1. Industry</p><div class="tiles" data-kit-industries></div></div>
+        <div class="kit__col"><p class="kit__label">2. Hazards</p><div class="hz" data-kit-hazards></div></div>
+        <div class="kit__col">
+          <p class="kit__label">3. Crew size</p>
+          <label class="crew"><svg><use href="#ic-crew"></use></svg><input type="number" min="1" max="5000" value="25" inputmode="numeric" data-kit-crew aria-label="Crew size"> workers</label>
+          <button class="btn btn--primary kit__go" type="button" data-kit-go>Get recommended kit &rarr;</button>
+          <p class="kit__hint">Sizes are confirmed on the quotation &mdash; send a size breakdown with your list.</p>
         </div>
-        <div class="finder__step">
-          <span class="step__n">02</span>
-          <h3>Industry <span class="hint" style="display:inline">optional</span></h3>
-          <div class="finder__chips" id="finder-industries"></div>
-        </div>
-        <div class="finder__step">
-          <span class="step__n">03</span>
-          <h3>Recommended kit</h3>
-          <div class="lines" id="finder-results">
-            <noscript><p class="cert__note" style="padding:14px 0">The finder needs JavaScript. Send your hazards on <a href="https://wa.me/971561821086">WhatsApp</a> and we will spec the kit.</p></noscript>
+        <div class="kit__col kit__col--out">
+          <p class="kit__label">Recommended kit</p>
+          <div class="kit__out">
+            <ul class="kitlist" data-kit-list><noscript><li>The kit finder needs JavaScript. Send your hazards on WhatsApp and we will spec the kit.</li></noscript></ul>
+            <div class="kit__actions">
+              <button class="btn btn--primary" type="button" data-kit-add>Add to quote</button>
+              <a class="btn btn--quiet" href="#" target="_blank" rel="noopener" data-kit-wa>Quote on WhatsApp</a>
+              <a class="btn btn--quiet" href="certificates.html">View kit details</a>
+              <button class="btn btn--quiet" type="button" data-kit-pdf>Download PDF</button>
+            </div>
           </div>
         </div>
       </div>
