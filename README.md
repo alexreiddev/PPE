@@ -69,7 +69,7 @@ brackets). Licences are in [`.claude/skills/licenses/`](.claude/skills/licenses/
 | [`googleworkspace/cli`](https://github.com/googleworkspace/cli) `skills/` [`a3768d0`] | 95 — `gws-*`, `recipe-*`, `persona-*` | Apache-2.0 |
 | [`nateherkai/scroll-craft`](https://github.com/nateherkai/scroll-craft) [`75d81f7`] | `scroll-craft` | MIT |
 | [`blader/humanizer`](https://github.com/blader/humanizer) [`0ef9fe5`] | `humanizer` (`SKILL.md` only) | MIT |
-| [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) `skills/` [`eb07f19`] | 24 | MIT |
+| [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) `skills/` [`eb07f19`] | 25 | MIT |
 | [`expo/skills`](https://github.com/expo/skills) `plugins/expo/skills/` [`05754e7`] | 23 — `expo-*`, `eas-*` | MIT |
 | [`supabase/agent-skills`](https://github.com/supabase/agent-skills) `skills/` [`c9be0e9`] | `supabase`, `supabase-postgres-best-practices` | MIT |
 | [`stripe/ai`](https://github.com/stripe/ai) `skills/stripe-best-practices` [`d9c9287`] | `stripe-best-practices` | MIT |
